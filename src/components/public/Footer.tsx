@@ -1,4 +1,5 @@
-import { MapPin, Phone, Clock, UtensilsCrossed } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { MapPin, Phone, Clock, UtensilsCrossed, ShieldCheck } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, TwitterIcon } from '../common/SocialIcons';
 import { useData } from '../../context/DataContext';
 
@@ -127,11 +128,23 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
-        <div className="border-t mt-10 pt-6 text-center" style={{ borderColor: 'var(--border-default)' }}>
+        {/* Copyright & Staff Portal Link */}
+        <div
+          className="border-t mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left"
+          style={{ borderColor: 'var(--border-default)' }}
+        >
           <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
             © {year} {restaurant.name}. All rights reserved.
           </p>
+
+          <Link
+            to="/admin/login"
+            className="text-xs font-medium flex items-center gap-1.5 transition-opacity opacity-75 hover:opacity-100"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            <ShieldCheck size={14} className="text-amber-500" />
+            <span>Staff & Manager Portal</span>
+          </Link>
         </div>
       </div>
     </footer>
