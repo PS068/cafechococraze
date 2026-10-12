@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { UtensilsCrossed, Lock, Mail, Eye, EyeOff, ArrowLeft, ShieldCheck, Sparkles } from 'lucide-react';
+import { UtensilsCrossed, Lock, Mail, Eye, EyeOff, ArrowLeft, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
-import { DEMO_ADMIN } from '../../data/demoData';
-import { isSupabaseConfigured } from '../../lib/supabase';
 import ThemeToggle from '../../components/common/ThemeToggle';
 
 export default function AdminLoginPage() {
@@ -48,12 +46,6 @@ export default function AdminLoginPage() {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleFillDemo = () => {
-    setEmail(DEMO_ADMIN.email);
-    setPassword(DEMO_ADMIN.password);
-    setError(null);
   };
 
   return (
@@ -203,32 +195,6 @@ export default function AdminLoginPage() {
               )}
             </button>
           </form>
-
-          {/* Quick Manager Fill Box */}
-          <div
-            className="mt-6 pt-5 border-t text-center"
-            style={{ borderColor: 'var(--border-default)' }}
-          >
-            <div className="flex items-center justify-center gap-1.5 text-xs font-medium mb-1.5 text-amber-600 dark:text-amber-400">
-              <Sparkles size={14} />
-              <span>Quick Manager Sign-In</span>
-            </div>
-            <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
-              Click below to auto-fill manager credentials for instant access.
-            </p>
-            <button
-              type="button"
-              onClick={handleFillDemo}
-              className="w-full py-2.5 px-3 rounded-xl border text-xs font-bold transition-all hover:opacity-90 active:scale-95 shadow-xs"
-              style={{
-                borderColor: 'var(--accent)',
-                color: 'var(--accent)',
-                backgroundColor: 'var(--accent-light)',
-              }}
-            >
-              ⚡ Auto-Fill Manager Credentials
-            </button>
-          </div>
         </div>
 
         {/* Note */}
