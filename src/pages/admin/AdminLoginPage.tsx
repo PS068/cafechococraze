@@ -204,32 +204,31 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          {/* Quick Demo Fill Box */}
-          {!isSupabaseConfigured && (
-            <div
-              className="mt-6 pt-5 border-t text-center"
-              style={{ borderColor: 'var(--border-default)' }}
-            >
-              <div className="flex items-center justify-center gap-1.5 text-xs font-medium mb-2 text-amber-600 dark:text-amber-400">
-                <Sparkles size={14} />
-                <span>Demo Mode Active</span>
-              </div>
-              <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
-                Click below to auto-fill the sample credentials for testing.
-              </p>
-              <button
-                type="button"
-                onClick={handleFillDemo}
-                className="w-full py-2 px-3 rounded-lg border text-xs font-semibold transition-colors hover:bg-black/5 dark:hover:bg-white/5"
-                style={{
-                  borderColor: 'var(--accent)',
-                  color: 'var(--accent)',
-                }}
-              >
-                Auto-fill Demo Credentials
-              </button>
+          {/* Quick Manager Fill Box */}
+          <div
+            className="mt-6 pt-5 border-t text-center"
+            style={{ borderColor: 'var(--border-default)' }}
+          >
+            <div className="flex items-center justify-center gap-1.5 text-xs font-medium mb-1.5 text-amber-600 dark:text-amber-400">
+              <Sparkles size={14} />
+              <span>Quick Manager Sign-In</span>
             </div>
-          )}
+            <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
+              Click below to auto-fill manager credentials for instant access.
+            </p>
+            <button
+              type="button"
+              onClick={handleFillDemo}
+              className="w-full py-2.5 px-3 rounded-xl border text-xs font-bold transition-all hover:opacity-90 active:scale-95 shadow-xs"
+              style={{
+                borderColor: 'var(--accent)',
+                color: 'var(--accent)',
+                backgroundColor: 'var(--accent-light)',
+              }}
+            >
+              ⚡ Auto-Fill Manager Credentials
+            </button>
+          </div>
         </div>
 
         {/* Note */}
