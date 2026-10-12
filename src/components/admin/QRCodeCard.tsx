@@ -143,6 +143,8 @@ export default function QRCodeCard() {
                   {copied ? <Check size={14} /> : <Copy size={14} />}
                   <span>{copied ? 'Copied' : 'Copy'}</span>
                 </button>
+              </div>
+
               {/* Live Vercel Link / Custom Domain Override */}
               <div className="pt-2">
                 <div className="flex items-center justify-between mb-1">
