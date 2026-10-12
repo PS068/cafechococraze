@@ -1,17 +1,38 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { QRCodeSVG, QRCodeCanvas } from 'qrcode.react';
-import { Copy, Check, Download, Printer, ExternalLink, QrCode } from 'lucide-react';
+import { Copy, Check, Download, Printer, ExternalLink, QrCode, Globe, Edit3, Save } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
 export default function QRCodeCard() {
-  const { restaurant, addToast } = useData();
+  const { restaurant, updateRestaurant, addToast } = useData();
   const [copied, setCopied] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  // Generate public menu URL based on current origin and restaurant slug
-  const publicUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/menu/${restaurant.slug || 'the-spice-house'}`
-    : `https://thespicehouse.com/menu/${restaurant.slug || 'the-spice-house'}`;
+  const defaultBaseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://ps-resto.vercel.app';
+  const savedDomain = (restaurant.theme_preferences?.custom_domain as string) || '';
+  const [customDomain, setCustomDomain] = useState(savedDomain);
+  const [isEditingDomain, setIsEditingDomain] = useState(false);
+
+  useEffect(() => {
+    if (restaurant.theme_preferences?.custom_domain) {
+      setCustomDomain(restaurant.theme_preferences.custom_domain as string);
+    }
+  }, [restaurant.theme_preferences]);
+
+  // Use configured domain if provided, otherwise fallback to current browser origin
+  const activeOrigin = customDomain.trim() ? customDomain.trim().replace(/\/$/, '') : defaultBaseUrl;
+  const publicUrl = `${activeOrigin}/menu/${restaurant.slug || 'ps-resto'}`;
+
+  const handleSaveDomain = async () => {
+    await updateRestaurant({
+      theme_preferences: {
+        ...restaurant.theme_preferences,
+        custom_domain: customDomain.trim(),
+      },
+    });
+    setIsEditingDomain(false);
+    addToast('Live deployment link saved! QR code updated.', 'success');
+  };
 
   const handleCopy = async () => {
     try {
@@ -122,6 +143,60 @@ export default function QRCodeCard() {
                   {copied ? <Check size={14} /> : <Copy size={14} />}
                   <span>{copied ? 'Copied' : 'Copy'}</span>
                 </button>
+              {/* Live Vercel Link / Custom Domain Override */}
+              <div className="pt-2">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
+                    <Globe size={13} className="text-amber-500" />
+                    <span>Live Deployment Link (e.g. Vercel)</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setIsEditingDomain(!isEditingDomain)}
+                    className="text-xs font-semibold hover:underline flex items-center gap-1"
+                    style={{ color: 'var(--accent)' }}
+                  >
+                    <Edit3 size={12} />
+                    <span>{isEditingDomain ? 'Cancel' : customDomain ? 'Edit Vercel Link' : '+ Set Live Vercel Link'}</span>
+                  </button>
+                </div>
+
+                {isEditingDomain ? (
+                  <div className="flex items-center gap-2 animate-fade-in">
+                    <input
+                      type="url"
+                      value={customDomain}
+                      onChange={(e) => setCustomDomain(e.target.value)}
+                      placeholder="https://ps-resto.vercel.app"
+                      className="flex-1 px-3 py-2 text-xs rounded-xl border outline-none font-mono"
+                      style={{
+                        backgroundColor: 'var(--bg-input)',
+                        borderColor: 'var(--border-default)',
+                        color: 'var(--text-primary)',
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSaveDomain}
+                      className="px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm active:scale-95 shrink-0"
+                      style={{
+                        backgroundColor: 'var(--accent)',
+                        color: 'var(--text-inverse)',
+                      }}
+                    >
+                      <Save size={13} />
+                      <span>Update QR</span>
+                    </button>
+                  </div>
+                ) : customDomain ? (
+                  <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                    ✓ QR code is linked to live domain: <span className="font-mono">{customDomain}</span>
+                  </p>
+                ) : (
+                  <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
+                    Using automatic current web link. After deploying to Vercel, click above to lock your live URL into the QR code!
+                  </p>
+                )}
               </div>
             </div>
 
