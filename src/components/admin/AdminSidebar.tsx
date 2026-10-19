@@ -45,7 +45,7 @@ export default function AdminSidebar() {
       {/* Mobile toggle */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 rounded-xl shadow-lg border"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 rounded-xl shadow-lg border no-print"
         style={{
           backgroundColor: 'var(--bg-card)',
           borderColor: 'var(--border-default)',
@@ -58,14 +58,14 @@ export default function AdminSidebar() {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-40 bg-black/50"
+          className="lg:hidden fixed inset-0 z-40 bg-black/50 no-print"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full z-40 w-64 border-r flex flex-col transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed top-0 left-0 h-full z-40 w-64 border-r flex flex-col transition-transform duration-300 lg:translate-x-0 no-print ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         style={{
