@@ -23,7 +23,7 @@ export default function CategoryTabs({ categories, activeCategory, onSelect }: C
   return (
     <div
       ref={scrollRef}
-      className="flex gap-2.5 overflow-x-auto hide-scrollbar pb-1"
+      className="flex gap-2.5 overflow-x-auto hide-scrollbar pb-1 w-full max-w-full"
     >
       {/* All tab */}
       <button

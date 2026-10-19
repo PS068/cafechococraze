@@ -94,7 +94,7 @@ export default function PublicMenuPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--bg-primary)' }}>
+    <div className="min-h-screen flex flex-col overflow-x-hidden w-full max-w-full" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <Navbar />
 
       {/* Red Alert Banner: Store Temporarily Closed / Kitchen Paused */}
@@ -236,12 +236,12 @@ export default function PublicMenuPage() {
         </div>
 
         {/* Search & Dietary Filters Bar */}
-        <div className="sticky top-14 sm:top-[4.5rem] z-30 -mx-3 sm:-mx-6 lg:-mx-8 px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 mb-6 sm:mb-8 border-y backdrop-blur-xl" style={{ backgroundColor: 'color-mix(in srgb, var(--bg-primary) 88%, transparent)', borderColor: 'var(--border-subtle)' }}>
+        <div className="sticky top-14 sm:top-[4.5rem] z-30 w-full py-2.5 sm:py-3.5 mb-6 sm:mb-8 border-y backdrop-blur-xl" style={{ backgroundColor: 'color-mix(in srgb, var(--bg-primary) 88%, transparent)', borderColor: 'var(--border-subtle)' }}>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <MenuSearch value={searchQuery} onChange={setSearchQuery} />
 
           {/* Dietary quick toggles */}
-          {hasDietarySignals && <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
+          {hasDietarySignals && <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 w-full max-w-full">
             <button
               onClick={() => setDietaryFilter('all')}
               className="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 border transition-all whitespace-nowrap cursor-pointer shadow-2xs"
