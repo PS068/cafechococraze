@@ -8,6 +8,7 @@ export const CAFE_CHOCO_CRAZE_CATEGORY_IDS = {
   FRIES: 'a1b2c3d4-0002-4000-8000-000000000002',
   SANDWICHES: 'a1b2c3d4-0003-4000-8000-000000000003',
   DESSERTS: 'a1b2c3d4-0004-4000-8000-000000000004',
+  COMBOS: 'a1b2c3d4-0005-4000-8000-000000000005',
 } as const;
 
 export const LEGACY_CATEGORY_ID_MAP: Record<string, string> = {
@@ -15,6 +16,7 @@ export const LEGACY_CATEGORY_ID_MAP: Record<string, string> = {
   'cat-fries': CAFE_CHOCO_CRAZE_CATEGORY_IDS.FRIES,
   'cat-sandwiches': CAFE_CHOCO_CRAZE_CATEGORY_IDS.SANDWICHES,
   'cat-desserts': CAFE_CHOCO_CRAZE_CATEGORY_IDS.DESSERTS,
+  'cat-combos': CAFE_CHOCO_CRAZE_CATEGORY_IDS.COMBOS,
 };
 
 export const CAFE_CHOCO_CRAZE_RESTAURANT: Restaurant = {
@@ -72,6 +74,13 @@ export const CAFE_CHOCO_CRAZE_CATEGORIES: Category[] = [
     restaurant_id: RESTAURANT_ID,
     name: 'Waffles & Desserts',
     display_order: 4,
+    created_at: CREATED_AT,
+  },
+  {
+    id: CAFE_CHOCO_CRAZE_CATEGORY_IDS.COMBOS,
+    restaurant_id: RESTAURANT_ID,
+    name: '🎁 CCC Special Combos',
+    display_order: 5,
     created_at: CREATED_AT,
   },
 ];
@@ -456,5 +465,64 @@ export const CAFE_CHOCO_CRAZE_MENU_ITEMS: MenuItem[] = [
     3,
     ['Popular', 'Molten Delight'],
     false,
+  ),
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // 5. 🎁 CCC SPECIAL COMBOS
+  // ══════════════════════════════════════════════════════════════════════════
+  item(
+    'combo-01',
+    CAFE_CHOCO_CRAZE_CATEGORY_IDS.COMBOS,
+    '🍔 Burger Combo',
+    'Burger + Fries + Pepsi Soft Beverage (100 ml). The perfect quick-bite trio!',
+    129,
+    'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=800&q=80',
+    1,
+    ['Combo Deal', 'Bestseller'],
+    true,
+  ),
+  item(
+    'combo-02',
+    CAFE_CHOCO_CRAZE_CATEGORY_IDS.COMBOS,
+    '⭐ Combo 1 — Burger + Coffee',
+    'Plain Veg Burger + Yummy Frolic Thick Cold Coffee. Simple, satisfying and refreshing!',
+    159,
+    'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80',
+    2,
+    ['Combo Deal', 'Must Try'],
+    true,
+  ),
+  item(
+    'combo-03',
+    CAFE_CHOCO_CRAZE_CATEGORY_IDS.COMBOS,
+    '⭐ Combo 2 — Sandwich + Shake',
+    'Cheese Grilled Sandwich + Vanilla Shake. A perfect cheesy & creamy pairing.',
+    169,
+    'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=800&q=80',
+    3,
+    ['Combo Deal', 'Popular'],
+    true,
+  ),
+  item(
+    'combo-04',
+    CAFE_CHOCO_CRAZE_CATEGORY_IDS.COMBOS,
+    '🍕 Combo 4 — Pizza + Burger + Shake',
+    'Plain Cheese Pizza (Small 6") + Plain Veg Burger + Vanilla Shake. A complete meal deal!',
+    249,
+    'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80',
+    4,
+    ['Combo Deal', "Chef's Special", 'Best Value'],
+    true,
+  ),
+  item(
+    'combo-05',
+    CAFE_CHOCO_CRAZE_CATEGORY_IDS.COMBOS,
+    '🍫 Combo 5 — Choco Feast & Coffee',
+    'Chocolate Toast + Cheese Maggi + Yummy Frolic Cold Coffee. Indulge in the ultimate sweet & savoury treat!',
+    249,
+    'https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=800&q=80',
+    5,
+    ['Combo Deal', 'Must Try', 'Signature Craze'],
+    true,
   ),
 ];

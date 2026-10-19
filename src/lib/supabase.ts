@@ -11,8 +11,12 @@
 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+const supabaseUrl =
+  (import.meta.env.VITE_SUPABASE_URL as string | undefined) ||
+  'https://qlfrpvziqadddcflygfy.supabase.co';
+const supabaseAnonKey =
+  (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsZnJwdnppcWFkZGRjZmx5Z2Z5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE4MTY4MTgsImV4cCI6MjEwNzM5MjgxOH0.2TDReJQ7qtKNj-smoFUFs_5mVs0G63FLoQiMCEM-YjE';
 
 export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
 
