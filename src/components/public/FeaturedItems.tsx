@@ -32,10 +32,10 @@ export default function FeaturedItems({ items, onSelectItem }: FeaturedItemsProp
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {/* Non-pizza items in full rows of 4 */}
         {nonPizzaGroups.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6 items-stretch">
             {nonPizzaGroups.map(({ item, variants }) => (
               <MenuItemCard
                 key={item.id}
@@ -49,7 +49,7 @@ export default function FeaturedItems({ items, onSelectItem }: FeaturedItemsProp
 
         {/* Dedicated row(s) for pizzas — never mixed with non-pizza items */}
         {pizzaGroups.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6 items-stretch">
             {pizzaGroups.map(({ item, variants }) => (
               <MenuItemCard
                 key={item.id}

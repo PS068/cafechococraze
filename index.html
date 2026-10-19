@@ -14,11 +14,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <title>Cafe Choco Craze — Digital Menu</title>
     <script>
-      // Prevent flash of wrong theme
+      // Prevent flash of wrong theme (defaults to light)
       (function() {
         const saved = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const theme = saved || (prefersDark ? 'dark' : 'light');
+        const theme = (saved === 'dark' || saved === 'light') ? saved : 'light';
         document.documentElement.classList.add(theme);
       })();
     </script>

@@ -138,11 +138,11 @@ export default function PublicMenuPage() {
 
       {/* Special Combo Offers Bar */}
       {hasCombos && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-2.5 sm:pt-6">
           <button
             type="button"
             onClick={handleComboClick}
-            className="w-full text-left rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md cursor-pointer group flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 p-4 sm:px-5 sm:py-4"
+            className="w-full text-left rounded-xl sm:rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md cursor-pointer group flex items-center justify-between gap-2.5 sm:gap-3.5 p-2.5 sm:px-5 sm:py-4 shadow-sm"
             style={{
               backgroundColor: 'var(--bg-card)',
               borderColor: 'var(--border-default)',
@@ -155,29 +155,29 @@ export default function PublicMenuPage() {
               e.currentTarget.style.borderColor = 'var(--border-default)';
             }}
           >
-            <div className="flex items-center gap-3.5 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
               {/* Gift/Offer Icon Badge */}
               <div
-                className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+                className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
                 style={{
                   backgroundColor: 'var(--accent-bg)',
                   color: 'var(--accent)',
                   border: '1px solid var(--accent-light)',
                 }}
               >
-                <Tag size={20} />
+                <Tag size={16} className="sm:w-5 sm:h-5" />
               </div>
 
               <div className="min-w-0">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <h3
-                    className="font-bold text-base sm:text-lg leading-snug tracking-tight truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors"
+                    className="font-bold text-xs sm:text-lg leading-snug tracking-tight truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors"
                     style={{ color: 'var(--text-primary)' }}
                   >
                     Special Combo Offers
                   </h3>
                   <span
-                    className="text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0"
+                    className="text-[9px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0"
                     style={{
                       backgroundColor: 'var(--accent-bg)',
                       color: 'var(--accent)',
@@ -188,7 +188,7 @@ export default function PublicMenuPage() {
                   </span>
                 </div>
                 <p
-                  className="text-xs sm:text-sm mt-0.5 truncate"
+                  className="text-[11px] sm:text-sm mt-0.5 truncate hidden xs:block sm:block"
                   style={{ color: 'var(--text-secondary)' }}
                 >
                   Pairings of burgers, pizzas, thick shakes &amp; cold coffees · Bundles from ₹129
@@ -197,16 +197,16 @@ export default function PublicMenuPage() {
             </div>
 
             {/* View Combos Action */}
-            <div className="flex items-center justify-end shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0" style={{ borderColor: 'var(--border-subtle)' }}>
+            <div className="flex items-center justify-end shrink-0">
               <span
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all group-hover:gap-2 shrink-0 shadow-2xs"
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-semibold transition-all group-hover:gap-2 shrink-0 shadow-2xs whitespace-nowrap"
                 style={{
                   backgroundColor: 'var(--accent)',
                   color: 'var(--text-inverse)',
                 }}
               >
                 <span>View Combos</span>
-                <ArrowDown size={14} className="group-hover:translate-y-0.5 transition-transform" />
+                <ArrowDown size={12} className="sm:w-3.5 sm:h-3.5 group-hover:translate-y-0.5 transition-transform" />
               </span>
             </div>
           </button>
@@ -214,29 +214,29 @@ export default function PublicMenuPage() {
       )}
 
       {/* Menu Main Section */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 w-full">
-        <div className="mb-8 sm:mb-10">
-          <div className="flex items-center gap-2 mb-2 sm:mb-3" style={{ color: 'var(--accent)' }}>
-            <Sparkles size={16} />
-            <span className="text-xs sm:text-sm font-bold tracking-[0.22em] uppercase">The menu</span>
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-12 flex-1 w-full">
+        <div className="mb-5 sm:mb-10">
+          <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-3" style={{ color: 'var(--accent)' }}>
+            <Sparkles size={14} className="sm:w-4 sm:h-4" />
+            <span className="text-[11px] sm:text-sm font-bold tracking-[0.2em] sm:tracking-[0.22em] uppercase">The menu</span>
           </div>
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2.5 sm:gap-3">
             <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
                 Choose your indulgence
               </h2>
-              <p className="mt-2 text-sm sm:text-base md:text-lg max-w-3xl" style={{ color: 'var(--text-secondary)' }}>
+              <p className="mt-1 sm:mt-2 text-xs sm:text-base md:text-lg max-w-3xl" style={{ color: 'var(--text-secondary)' }}>
                 Signature thick cold coffees, chocolicks, handcrafted shakes, crispy fries &amp; cafe delights.
               </p>
             </div>
-            <div className="text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full border shrink-0" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-default)', color: 'var(--text-muted)' }}>
+            <div className="text-[11px] sm:text-sm font-semibold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border shrink-0 w-fit" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-default)', color: 'var(--text-muted)' }}>
               {menuItems.filter((item) => item.is_available).length} items · prices in INR
             </div>
           </div>
         </div>
 
         {/* Search & Dietary Filters Bar */}
-        <div className="sticky top-[4.5rem] z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 mb-8 border-y backdrop-blur-xl" style={{ backgroundColor: 'color-mix(in srgb, var(--bg-primary) 88%, transparent)', borderColor: 'var(--border-subtle)' }}>
+        <div className="sticky top-14 sm:top-[4.5rem] z-30 -mx-3 sm:-mx-6 lg:-mx-8 px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 mb-6 sm:mb-8 border-y backdrop-blur-xl" style={{ backgroundColor: 'color-mix(in srgb, var(--bg-primary) 88%, transparent)', borderColor: 'var(--border-subtle)' }}>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <MenuSearch value={searchQuery} onChange={setSearchQuery} />
 

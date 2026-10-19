@@ -33,25 +33,25 @@ export default function Navbar() {
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[4.75rem]">
+        <div className="flex items-center justify-between h-14 sm:h-[4.75rem]">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3.5 group" aria-label={`${restaurant.name} home`}>
+          <Link to="/" className="flex items-center gap-2.5 sm:gap-3.5 group" aria-label={`${restaurant.name} home`}>
             {restaurant.logo_url ? (
               <img
                 src={restaurant.logo_url}
                 alt={restaurant.name}
-                className="h-11 w-11 rounded-2xl object-contain p-0.5 ring-1 ring-black/10 shadow-xs bg-white"
+                className="h-9 w-9 sm:h-11 sm:w-11 rounded-xl sm:rounded-2xl object-contain p-0.5 ring-1 ring-black/10 shadow-xs bg-white"
               />
             ) : (
               <div
-                className="h-11 w-11 rounded-2xl flex items-center justify-center shadow-sm"
+                className="h-9 w-9 sm:h-11 sm:w-11 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: 'var(--accent)', color: 'var(--text-inverse)' }}
               >
-                <Coffee size={22} strokeWidth={1.8} />
+                <Coffee size={20} strokeWidth={1.8} className="sm:w-[22px] sm:h-[22px]" />
               </div>
             )}
             <span
-              className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight group-hover:opacity-85 transition-opacity"
+              className="text-base sm:text-xl md:text-2xl font-bold tracking-tight group-hover:opacity-85 transition-opacity"
               style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
             >
               {restaurant.name}

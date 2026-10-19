@@ -17,9 +17,9 @@ function renderSegregatedCards(groups: MenuItemWithVariants[], onSelectItem?: (i
   const pizzas = groups.filter((g) => isPizzaVariantGroup(g));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {nonPizzas.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6 items-stretch">
           {nonPizzas.map(({ item, variants }) => (
             <MenuItemCard
               key={item.id}
@@ -31,7 +31,7 @@ function renderSegregatedCards(groups: MenuItemWithVariants[], onSelectItem?: (i
         </div>
       )}
       {pizzas.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6 items-stretch">
           {pizzas.map(({ item, variants }) => (
             <MenuItemCard
               key={item.id}

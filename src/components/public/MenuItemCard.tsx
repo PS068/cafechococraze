@@ -33,7 +33,7 @@ export default function MenuItemCard({ item, variants, onSelect }: MenuItemCardP
           onSelect?.(activeItem);
         }
       }}
-      className="group text-left rounded-2xl border overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-md cursor-pointer select-none flex flex-col justify-between w-full h-full"
+      className="group text-left rounded-xl sm:rounded-2xl border overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-md cursor-pointer select-none flex flex-col justify-between w-full h-full"
       style={{
         backgroundColor: 'var(--bg-card)',
         borderColor: 'var(--border-default)',
@@ -60,19 +60,19 @@ export default function MenuItemCard({ item, variants, onSelect }: MenuItemCardP
 
             {/* Labels overlay */}
             {visibleLabels.length > 0 && (
-              <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
+              <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-wrap gap-1 sm:gap-1.5 z-10">
                 {visibleLabels.map((label) => (
                   <span
                     key={label}
-                    className="px-2.5 py-0.5 text-xs font-semibold rounded-md flex items-center gap-1 shadow-sm"
+                    className="px-1.5 sm:px-2.5 py-0.5 text-[10px] sm:text-xs font-semibold rounded sm:rounded-md flex items-center gap-0.5 sm:gap-1 shadow-sm"
                     style={{
                       backgroundColor: label === 'Popular' ? 'var(--accent)' : label === 'Spicy' ? '#ef4444' : '#7052a3',
                       color: '#fff',
                     }}
                   >
-                    {label === 'Popular' && <Star size={11} />}
-                    {label === 'Spicy' && <Flame size={11} />}
-                    {label === "Chef's Special" && <Award size={11} />}
+                    {label === 'Popular' && <Star size={10} className="sm:w-2.5 sm:h-2.5" />}
+                    {label === 'Spicy' && <Flame size={10} className="sm:w-2.5 sm:h-2.5" />}
+                    {label === "Chef's Special" && <Award size={10} className="sm:w-2.5 sm:h-2.5" />}
                     {label}
                   </span>
                 ))}
@@ -81,7 +81,7 @@ export default function MenuItemCard({ item, variants, onSelect }: MenuItemCardP
 
             {/* Discount badge */}
             {hasDiscount && (
-              <div className="absolute top-3 right-3 px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-600 text-white shadow-sm z-10">
+              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 px-1.5 sm:px-2.5 py-0.5 text-[10px] sm:text-xs font-bold rounded-full bg-emerald-600 text-white shadow-sm z-10">
                 {Math.round(((item.price - item.discounted_price!) / item.price) * 100)}% OFF
               </div>
             )}
@@ -89,8 +89,8 @@ export default function MenuItemCard({ item, variants, onSelect }: MenuItemCardP
             {/* Unavailable overlay */}
             {!item.is_available && (
               <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-20">
-                <span className="text-white font-semibold text-xs sm:text-sm px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-sm">
-                  Currently Unavailable
+                <span className="text-white font-semibold text-[10px] sm:text-sm px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-black/60 backdrop-blur-sm">
+                  Unavailable
                 </span>
               </div>
             )}
@@ -98,36 +98,36 @@ export default function MenuItemCard({ item, variants, onSelect }: MenuItemCardP
         )}
 
         {/* Content */}
-        <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+        <div className="p-2.5 sm:p-5 flex-1 flex flex-col justify-between">
           <div>
             {/* If no image, show badges here at the top of content */}
             {!hasImage && visibleLabels.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mb-2.5">
+              <div className="flex flex-wrap gap-1 sm:gap-1.5 mb-1.5 sm:mb-2.5">
                 {visibleLabels.map((label) => (
                   <span
                     key={label}
-                    className="px-2.5 py-0.5 text-xs font-semibold rounded-md flex items-center gap-1 shadow-2xs"
+                    className="px-1.5 sm:px-2.5 py-0.5 text-[10px] sm:text-xs font-semibold rounded sm:rounded-md flex items-center gap-0.5 sm:gap-1 shadow-2xs"
                     style={{
                       backgroundColor: label === 'Popular' ? 'var(--accent)' : label === 'Spicy' ? '#ef4444' : '#7052a3',
                       color: '#fff',
                     }}
                   >
-                    {label === 'Popular' && <Star size={11} />}
-                    {label === 'Spicy' && <Flame size={11} />}
-                    {label === "Chef's Special" && <Award size={11} />}
+                    {label === 'Popular' && <Star size={10} className="sm:w-2.5 sm:h-2.5" />}
+                    {label === 'Spicy' && <Flame size={10} className="sm:w-2.5 sm:h-2.5" />}
+                    {label === "Chef's Special" && <Award size={10} className="sm:w-2.5 sm:h-2.5" />}
                     {label}
                   </span>
                 ))}
               </div>
             )}
 
-            <div className="flex items-start justify-between gap-2 mb-1.5">
-              <div className="flex items-center gap-2 min-w-0">
+            <div className="flex items-start justify-between gap-1 sm:gap-2 mb-1 sm:mb-1.5">
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                 {activeItem.food_type !== 'none' && (
                   <span className={`food-type-badge shrink-0 ${activeItem.food_type === 'veg' ? 'veg' : 'nonveg'}`} />
                 )}
                 <h3
-                  className="font-bold text-base sm:text-lg leading-snug tracking-tight truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors"
+                  className="font-bold text-xs sm:text-base md:text-lg leading-snug tracking-tight line-clamp-2 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors"
                   style={{ color: 'var(--text-primary)' }}
                 >
                   {displayName}
@@ -141,7 +141,7 @@ export default function MenuItemCard({ item, variants, onSelect }: MenuItemCardP
                     length:
                       activeItem.spice_level === 'mild' ? 1 : activeItem.spice_level === 'medium' ? 2 : activeItem.spice_level === 'hot' ? 3 : 4,
                   }).map((_, i) => (
-                    <Flame key={i} size={14} className="text-orange-500" />
+                    <Flame key={i} size={11} className="text-orange-500 sm:w-3.5 sm:h-3.5" />
                   ))}
                 </div>
               )}
@@ -150,7 +150,7 @@ export default function MenuItemCard({ item, variants, onSelect }: MenuItemCardP
             {/* Description */}
             {activeItem.description && (
               <p
-                className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 leading-relaxed mb-3 line-clamp-2"
+                className="text-[11px] sm:text-sm text-stone-500 dark:text-stone-400 leading-tight sm:leading-relaxed mb-2 sm:mb-3 line-clamp-2"
               >
                 {activeItem.description}
               </p>
@@ -160,14 +160,14 @@ export default function MenuItemCard({ item, variants, onSelect }: MenuItemCardP
           {/* Size Pills (when item has multiple sizes) */}
           {hasVariants && (
             <div
-              className="mt-2.5 pt-2.5 border-t flex flex-col gap-1.5"
+              className="mt-1.5 sm:mt-2.5 pt-1.5 sm:pt-2.5 border-t flex flex-col gap-1 sm:gap-1.5"
               style={{ borderColor: 'var(--border-subtle)' }}
               onClick={(e) => e.stopPropagation()}
             >
-              <span className="text-[11px] font-bold tracking-wider uppercase text-stone-400">
+              <span className="text-[9px] sm:text-[11px] font-bold tracking-wider uppercase text-stone-400">
                 Portion / Size
               </span>
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              <div className="flex flex-wrap gap-1 sm:gap-2">
                 {variants!.map((v) => {
                   const raw = v.name.match(/\[(.*?)\]/)?.[1] || v.name;
                   const label = formatSizeLabel(raw);
@@ -180,7 +180,7 @@ export default function MenuItemCard({ item, variants, onSelect }: MenuItemCardP
                         e.stopPropagation();
                         setSelectedVariantId(v.id);
                       }}
-                      className="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-semibold rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs"
+                      className="px-1.5 sm:px-3 py-0.5 sm:py-1.5 text-[10px] sm:text-sm font-semibold rounded-lg sm:rounded-xl border transition-all cursor-pointer flex items-center gap-1 shadow-2xs"
                       style={{
                         backgroundColor: isSelected ? 'var(--accent)' : 'var(--bg-hover)',
                         color: isSelected ? '#fff' : 'var(--text-primary)',
@@ -199,22 +199,22 @@ export default function MenuItemCard({ item, variants, onSelect }: MenuItemCardP
       </div>
 
       {/* Price footer */}
-      <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-2.5 flex items-center justify-between border-t" style={{ borderColor: 'var(--border-subtle)' }}>
-        <div className="flex items-baseline gap-2">
+      <div className="px-2.5 sm:px-5 pb-2.5 sm:pb-5 pt-2 sm:pt-2.5 flex items-center justify-between border-t" style={{ borderColor: 'var(--border-subtle)' }}>
+        <div className="flex items-baseline gap-1 sm:gap-2">
           <span
-            className="text-lg sm:text-xl font-extrabold tracking-tight"
+            className="text-sm sm:text-xl font-extrabold tracking-tight"
             style={{ color: 'var(--accent)' }}
           >
             {formatINR(hasDiscount ? activeItem.discounted_price : activeItem.price)}
           </span>
           {hasDiscount && (
-            <span className="text-xs sm:text-sm line-through text-stone-400">
+            <span className="text-[10px] sm:text-sm line-through text-stone-400">
               {formatINR(activeItem.price)}
             </span>
           )}
         </div>
-        <span className="text-xs sm:text-sm font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform" style={{ color: 'var(--accent)' }}>
-          Details <ArrowUpRight size={15} />
+        <span className="text-[10px] sm:text-sm font-semibold flex items-center gap-0.5 sm:gap-1 group-hover:translate-x-0.5 transition-transform" style={{ color: 'var(--accent)' }}>
+          Details <ArrowUpRight size={12} className="sm:w-3.5 sm:h-3.5" />
         </span>
       </div>
     </div>

@@ -16,8 +16,7 @@ export default function RestaurantHero({ onOpenLocation, onOpenSchedule }: Resta
   return (
     <section
       id="hero"
-      className="relative w-full overflow-hidden"
-      style={{ minHeight: '430px', maxHeight: '570px' }}
+      className="relative w-full overflow-hidden min-h-[220px] sm:min-h-[430px] sm:max-h-[570px]"
     >
       {/* Background image */}
       <div className="absolute inset-0">
@@ -37,31 +36,31 @@ export default function RestaurantHero({ onOpenLocation, onOpenSchedule }: Resta
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center h-full" style={{ minHeight: '480px' }}>
-        <div className="pt-28 pb-16 md:pt-36 md:pb-24 max-w-3xl">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center h-full min-h-[220px] sm:min-h-[480px]">
+        <div className="pt-18 pb-4 sm:pt-28 sm:pb-16 md:pt-36 md:pb-24 max-w-3xl">
           {/* Cafe Identity Badge with Logo */}
-          <div className="flex items-center gap-3.5 mb-5 animate-fade-in-up">
+          <div className="flex items-center gap-2.5 sm:gap-3.5 mb-2.5 sm:mb-5 animate-fade-in-up">
             {restaurant.logo_url && (
               <img
                 src={restaurant.logo_url}
                 alt={restaurant.name}
-                className="h-14 w-14 sm:h-16 sm:w-16 rounded-2xl object-contain p-1 ring-2 ring-white/30 shadow-2xl bg-white shrink-0"
+                className="h-10 w-10 sm:h-16 sm:w-16 rounded-xl sm:rounded-2xl object-contain p-0.5 sm:p-1 ring-2 ring-white/30 shadow-2xl bg-white shrink-0"
               />
             )}
             <div>
-              <div className="flex items-center gap-2">
-                <Sparkles size={16} className="text-amber-300" />
-                <span className="text-amber-200 text-xs sm:text-sm font-semibold tracking-[0.24em] uppercase">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <Sparkles size={14} className="text-amber-300 sm:w-4 sm:h-4 shrink-0" />
+                <span className="text-amber-200 text-[10px] sm:text-sm font-semibold tracking-[0.2em] sm:tracking-[0.24em] uppercase">
                   Digital Menu · Cafe Choco Craze
                 </span>
               </div>
-              <p className="text-white/75 text-xs sm:text-sm mt-0.5 font-medium">Signature Shakes, Frolic Coffees &amp; Cafe Bites</p>
+              <p className="text-white/75 text-[11px] sm:text-sm mt-0.5 font-medium hidden sm:block">Signature Shakes, Frolic Coffees &amp; Cafe Bites</p>
             </div>
           </div>
 
           {/* Restaurant name */}
           <h1
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-4 leading-[1.04] tracking-tight animate-fade-in-up"
+            className="text-2xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-1.5 sm:mb-4 leading-tight sm:leading-[1.04] tracking-tight animate-fade-in-up"
             style={{ fontFamily: 'var(--font-display)', animationDelay: '0.1s' }}
           >
             {restaurant.name}
@@ -70,29 +69,29 @@ export default function RestaurantHero({ onOpenLocation, onOpenSchedule }: Resta
           {/* Tagline */}
           {restaurant.tagline ? (
             <p
-              className="text-base sm:text-xl md:text-2xl text-white/90 mb-8 max-w-2xl leading-relaxed animate-fade-in-up"
+              className="text-xs sm:text-xl md:text-2xl text-white/90 mb-3 sm:mb-8 max-w-2xl leading-normal sm:leading-relaxed line-clamp-2 sm:line-clamp-none animate-fade-in-up"
               style={{ animationDelay: '0.2s' }}
             >
               {restaurant.tagline}
             </p>
           ) : (
-            <p className="text-base sm:text-xl md:text-2xl text-white/80 mb-8 max-w-2xl leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <p className="text-xs sm:text-xl md:text-2xl text-white/80 mb-3 sm:mb-8 max-w-2xl leading-normal sm:leading-relaxed line-clamp-2 sm:line-clamp-none animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               A considered collection of artisan pizzas, indulgent blends, shakes and cold coffees.
             </p>
           )}
 
           {/* Info pills */}
-          <div className="flex flex-wrap gap-3 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <div className="flex flex-wrap gap-2 sm:gap-3 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             {restaurant.address && (
               <button
                 type="button"
                 onClick={onOpenLocation}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 backdrop-blur-md border border-white/20 transition-all cursor-pointer group shadow-sm text-left"
+                className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 backdrop-blur-md border border-white/20 transition-all cursor-pointer group shadow-sm text-left"
                 title="Touch for directions to Cafe Choco Craze on Google Maps"
                 aria-label="Touch for directions to Cafe Choco Craze on Google Maps"
               >
-                <MapPin size={16} className="text-amber-400 group-hover:scale-110 transition-transform" />
-                <span className="text-white text-sm sm:text-base font-medium">
+                <MapPin size={14} className="text-amber-400 group-hover:scale-110 transition-transform sm:w-4 sm:h-4 shrink-0" />
+                <span className="text-white text-xs sm:text-base font-medium">
                   {restaurant.address.split(',')[0]} · Directions ↗
                 </span>
               </button>
@@ -101,26 +100,26 @@ export default function RestaurantHero({ onOpenLocation, onOpenSchedule }: Resta
               <button
                 type="button"
                 onClick={onOpenSchedule}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 backdrop-blur-md border border-white/20 transition-all cursor-pointer group shadow-sm text-left"
+                className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 backdrop-blur-md border border-white/20 transition-all cursor-pointer group shadow-sm text-left"
                 title="Click to view weekly schedule & holiday hours"
                 aria-label="Click to view weekly schedule & holiday hours"
               >
-                <Clock size={16} className="text-amber-400 group-hover:scale-110 transition-transform shrink-0" />
+                <Clock size={14} className="text-amber-400 group-hover:scale-110 transition-transform sm:w-4 sm:h-4 shrink-0" />
                 <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2">
-                  <span className="text-white text-sm sm:text-base font-medium">
+                  <span className="text-white text-xs sm:text-base font-medium">
                     {restaurant.opening_hours}
                   </span>
                   {!isStoreOpen ? (
-                    <span className="text-[11px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap bg-red-500/30 text-red-200 border border-red-400/40">
+                    <span className="text-[10px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap bg-red-500/30 text-red-200 border border-red-400/40">
                       ● Temporarily Closed
                     </span>
                   ) : holiday.hasNotice ? (
-                    <span className="text-[11px] font-bold text-amber-300 bg-amber-500/25 px-2 py-0.5 rounded-full border border-amber-400/40 whitespace-nowrap">
+                    <span className="text-[10px] sm:text-[11px] font-bold text-amber-300 bg-amber-500/25 px-1.5 sm:px-2 py-0.5 rounded-full border border-amber-400/40 whitespace-nowrap">
                       ⚠️ {holiday.holidayName} · Hours might differ
                     </span>
                   ) : (
                     <span
-                      className="text-[11px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+                      className="text-[10px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap"
                       style={{
                         backgroundColor: status.isOpen ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)',
                         color: status.isOpen ? '#86efac' : '#fca5a5',
@@ -130,13 +129,13 @@ export default function RestaurantHero({ onOpenLocation, onOpenSchedule }: Resta
                     </span>
                   )}
                 </div>
-                <ChevronDown size={14} className="text-white/70 group-hover:translate-y-0.5 transition-transform shrink-0" />
+                <ChevronDown size={13} className="text-white/70 group-hover:translate-y-0.5 transition-transform shrink-0" />
               </button>
             )}
           </div>
           <button
             onClick={() => document.querySelector('#menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-            className="mt-8 inline-flex items-center gap-2 text-sm sm:text-base font-semibold text-white/90 hover:text-white transition-colors animate-fade-in-up cursor-pointer"
+            className="hidden sm:inline-flex items-center gap-2 text-sm sm:text-base font-semibold text-white/90 hover:text-white transition-colors animate-fade-in-up cursor-pointer mt-8"
             style={{ animationDelay: '0.4s' }}
           >
             Explore the menu <ArrowDown size={17} />
@@ -145,7 +144,7 @@ export default function RestaurantHero({ onOpenLocation, onOpenSchedule }: Resta
       </div>
 
       {/* Bottom curve */}
-      <div className="absolute bottom-0 left-0 right-0 h-8">
+      <div className="absolute bottom-0 left-0 right-0 h-4 sm:h-8">
         <svg viewBox="0 0 1440 32" className="w-full h-full" preserveAspectRatio="none">
           <path
             d="M0,0 C480,32 960,32 1440,0 L1440,32 L0,32 Z"
