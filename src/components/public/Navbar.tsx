@@ -34,8 +34,21 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-[4.75rem]">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 sm:gap-3.5 group" aria-label={`${restaurant.name} home`}>
+          {/* Logo & Brand Name - reloads to fresh home page */}
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              if (window.location.pathname === '/' && !window.location.search && !window.location.hash) {
+                window.scrollTo({ top: 0, behavior: 'instant' });
+                window.location.reload();
+              } else {
+                window.location.href = '/';
+              }
+            }}
+            className="flex items-center gap-2.5 sm:gap-3.5 group cursor-pointer"
+            aria-label={`${restaurant.name} home`}
+          >
             {restaurant.logo_url ? (
               <img
                 src={restaurant.logo_url}
@@ -56,7 +69,7 @@ export default function Navbar() {
             >
               {restaurant.name}
             </span>
-          </Link>
+          </a>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-2">
