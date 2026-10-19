@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import DashboardStats from '../../components/admin/DashboardStats';
 import { useData } from '../../context/DataContext';
+import { formatINR } from '../../lib/formatters';
 
 export default function AdminDashboardPage() {
   const { restaurant, categories, menuItems, updateMenuItem } = useData();
@@ -199,7 +200,7 @@ export default function AdminDashboardPage() {
                   />
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className={`food-type-badge ${item.food_type === 'veg' ? 'veg' : 'nonveg'}`} />
+                      {item.food_type !== 'none' && <span className={`food-type-badge ${item.food_type === 'veg' ? 'veg' : 'nonveg'}`} />}
                       <p className="font-semibold text-sm truncate" style={{ color: 'var(--text-primary)' }}>
                         {item.name}
                       </p>
@@ -210,7 +211,7 @@ export default function AdminDashboardPage() {
                       )}
                     </div>
                     <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                      ₹{item.price} • {categories.find((c) => c.id === item.category_id)?.name || 'General'}
+                      {formatINR(item.price)} • {categories.find((c) => c.id === item.category_id)?.name || 'General'}
                     </p>
                   </div>
                 </div>

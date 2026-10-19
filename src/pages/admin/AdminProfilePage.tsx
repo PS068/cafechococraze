@@ -123,7 +123,7 @@ export default function AdminProfilePage() {
                 required
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                placeholder="The Spice House"
+                placeholder="Cafe Choco Craze"
                 className="w-full px-4 py-2.5 text-sm rounded-xl border transition-colors"
                 style={inputStyle}
               />
@@ -139,7 +139,7 @@ export default function AdminProfilePage() {
                   type="text"
                   value={form.cuisine_type}
                   onChange={(e) => setForm({ ...form, cuisine_type: e.target.value })}
-                  placeholder="e.g. North Indian, Mughlai, Tandoori"
+                  placeholder="e.g. Thick Shakes, Cold Coffee, Bites & Desserts"
                   className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border transition-colors"
                   style={inputStyle}
                 />
@@ -155,7 +155,7 @@ export default function AdminProfilePage() {
               type="text"
               value={form.tagline}
               onChange={(e) => setForm({ ...form, tagline: e.target.value })}
-              placeholder="Authentic Flavors, Unforgettable Moments"
+              placeholder="Delicious Cold Coffees, Thick Shakes & Cafe Bites"
               className="w-full px-4 py-2.5 text-sm rounded-xl border transition-colors"
               style={inputStyle}
             />
@@ -191,14 +191,24 @@ export default function AdminProfilePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: 'var(--text-secondary)' }}>
-                Logo Image URL
-              </label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>
+                  Logo Image URL
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setForm({ ...form, logo_url: '/cafe-choco-craze-logo.jpg' })}
+                  className="text-xs font-medium cursor-pointer hover:underline"
+                  style={{ color: 'var(--accent)' }}
+                >
+                  Use Official Logo
+                </button>
+              </div>
               <input
-                type="url"
+                type="text"
                 value={form.logo_url}
                 onChange={(e) => setForm({ ...form, logo_url: e.target.value })}
-                placeholder="https://images.unsplash.com/..."
+                placeholder="/cafe-choco-craze-logo.jpg or https://..."
                 className="w-full px-4 py-2.5 text-sm rounded-xl border transition-colors"
                 style={inputStyle}
               />
@@ -208,7 +218,7 @@ export default function AdminProfilePage() {
                   <img
                     src={form.logo_url}
                     alt="Logo Preview"
-                    className="w-12 h-12 rounded-xl object-cover border"
+                    className="w-12 h-12 rounded-xl object-cover border bg-white"
                     style={{ borderColor: 'var(--border-default)' }}
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />

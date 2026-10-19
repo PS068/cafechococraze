@@ -130,7 +130,7 @@ export default function AdminCategoriesPage() {
             type="text"
             value={newCatName}
             onChange={(e) => setNewCatName(e.target.value)}
-            placeholder="e.g. Sizzlers, Mocktails, Chef's Tasting"
+            placeholder="e.g. Thick Shakes, Cold Coffees, Fries & Bites"
             className="flex-1 px-4 py-2.5 text-sm rounded-xl border transition-colors"
             style={{
               backgroundColor: 'var(--bg-input)',

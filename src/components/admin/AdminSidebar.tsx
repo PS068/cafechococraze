@@ -78,12 +78,20 @@ export default function AdminSidebar() {
           className="px-5 py-5 border-b flex items-center gap-3"
           style={{ borderColor: 'var(--border-default)' }}
         >
-          <div
-            className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
-            style={{ backgroundColor: 'var(--accent)', color: 'var(--text-inverse)' }}
-          >
-            <UtensilsCrossed size={18} />
-          </div>
+          {restaurant.logo_url ? (
+            <img
+              src={restaurant.logo_url}
+              alt={restaurant.name}
+              className="w-9 h-9 rounded-lg object-cover ring-1 ring-black/10 bg-white shrink-0"
+            />
+          ) : (
+            <div
+              className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+              style={{ backgroundColor: 'var(--accent)', color: 'var(--text-inverse)' }}
+            >
+              <UtensilsCrossed size={18} />
+            </div>
+          )}
           <div className="min-w-0">
             <p
               className="text-sm font-semibold truncate"

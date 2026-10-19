@@ -1,7 +1,12 @@
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef, type ReactNode } from 'react';
 import type { Restaurant, Category, MenuItem, MenuItemFormData, Toast } from '../types';
-import { DEMO_RESTAURANT, DEMO_CATEGORIES, DEMO_MENU_ITEMS } from '../data/demoData';
+import {
+  CAFE_CHOCO_CRAZE_RESTAURANT,
+  CAFE_CHOCO_CRAZE_CATEGORIES,
+  CAFE_CHOCO_CRAZE_MENU_ITEMS,
+} from '../data/cafeChocoCrazeData';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { sanitizeCulinaryLabels } from '../lib/menuVariants';
 
 interface DataContextType {
   restaurant: Restaurant;
@@ -32,6 +37,13 @@ interface DataContextType {
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
+function toValidUuidOrNull(str?: string | null): string | null {
+  if (!str) return null;
+  const trimmed = str.trim();
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(trimmed) ? trimmed : null;
+}
+
 function generateId(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID();
@@ -43,65 +55,359 @@ function generateId(): string {
   });
 }
 
+const RESTAURANT_STORAGE_KEY = 'cafe_restaurant_overrides';
+const MENU_ITEMS_STORAGE_KEY = 'cafe_menu_items_overrides';
+const CATEGORIES_STORAGE_KEY = 'cafe_categories_overrides';
+
+function getPersistedRestaurant(base: Restaurant): Restaurant {
+  try {
+    const raw = typeof window !== 'undefined' ? localStorage.getItem(RESTAURANT_STORAGE_KEY) : null;
+    if (!raw) return base;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') return base;
+
+    return {
+      ...base,
+      ...parsed,
+      theme_preferences: {
+        ...(base.theme_preferences || {}),
+        ...(parsed.theme_preferences || {}),
+      },
+    };
+  } catch {
+    return base;
+  }
+}
+
+function getPersistedCategories(base: Category[]): Category[] {
+  try {
+    const raw = typeof window !== 'undefined' ? localStorage.getItem(CATEGORIES_STORAGE_KEY) : null;
+    if (!raw) return base;
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : base;
+  } catch {
+    return base;
+  }
+}
+
+function getPersistedMenuItems(base: MenuItem[]): MenuItem[] {
+  try {
+    const raw = typeof window !== 'undefined' ? localStorage.getItem(MENU_ITEMS_STORAGE_KEY) : null;
+    if (!raw) return base;
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : base;
+  } catch {
+    return base;
+  }
+}
+
+function mergeWithLocalMenuItemOverrides(dbItems: MenuItem[]): MenuItem[] {
+  try {
+    const raw = typeof window !== 'undefined' ? localStorage.getItem(MENU_ITEMS_STORAGE_KEY) : null;
+    if (!raw) return dbItems;
+    const localOverrides = JSON.parse(raw) as MenuItem[];
+    if (!Array.isArray(localOverrides) || localOverrides.length === 0) return dbItems;
+
+    const localMap = new Map<string, MenuItem>(localOverrides.map((i) => [i.id, i]));
+    const mergedDbItems = dbItems.map((dbItem) => {
+      const local = localMap.get(dbItem.id);
+      if (!local) return dbItem;
+      return { ...dbItem, ...local };
+    });
+
+    const dbIds = new Set(dbItems.map((i) => i.id));
+    const extraLocalItems = localOverrides.filter((i) => !dbIds.has(i.id));
+
+    return [...mergedDbItems, ...extraLocalItems];
+  } catch {
+    return dbItems;
+  }
+}
+
+function savePersistedMenuItems(items: MenuItem[]) {
+  try {
+    localStorage.setItem(MENU_ITEMS_STORAGE_KEY, JSON.stringify(items));
+  } catch (e) {
+    console.warn('Failed to save menu items to localStorage:', e);
+  }
+}
+
+function savePersistedCategories(cats: Category[]) {
+  try {
+    localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(cats));
+  } catch (e) {
+    console.warn('Failed to save categories to localStorage:', e);
+  }
+}
+
 export function DataProvider({ children }: { children: ReactNode }) {
-  const [restaurant, setRestaurant] = useState<Restaurant>(DEMO_RESTAURANT);
-  const [categories, setCategories] = useState<Category[]>(DEMO_CATEGORIES);
-  const [menuItems, setMenuItems] = useState<MenuItem[]>(DEMO_MENU_ITEMS);
+  const [restaurant, setRestaurant] = useState<Restaurant>(() =>
+    getPersistedRestaurant(CAFE_CHOCO_CRAZE_RESTAURANT)
+  );
+  const [categories, setCategories] = useState<Category[]>(() =>
+    getPersistedCategories(CAFE_CHOCO_CRAZE_CATEGORIES)
+  );
+  const [menuItems, setMenuItems] = useState<MenuItem[]>(() =>
+    getPersistedMenuItems(CAFE_CHOCO_CRAZE_MENU_ITEMS)
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  // Load data from Supabase or demo
+  // Track the reliable restaurant id for queries and foreign keys
+  const restaurantIdRef = useRef<string>('');
+
+  // ── Load data from Supabase on mount ──
   useEffect(() => {
     loadData();
   }, []);
 
-  async function loadData() {
-    if (isSupabaseConfigured && supabase) {
-      try {
-        // Load restaurant
-        const { data: restData } = await supabase
-          .from('restaurants')
-          .select('*')
-          .limit(1)
-          .single();
-        if (restData) setRestaurant(restData);
-
-        // Load categories
-        const { data: catData } = await supabase
-          .from('categories')
-          .select('*')
-          .order('display_order');
-        if (catData) setCategories(catData);
-
-        // Load menu items
-        const { data: itemData } = await supabase
-          .from('menu_items')
-          .select('*')
-          .order('display_order');
-        if (itemData) setMenuItems(itemData);
-      } catch (err) {
-        console.error('Error loading data from Supabase:', err);
-        addToast('Failed to load data from database. Using demo data.', 'error');
+  // ── Sync changes across browser tabs ──
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === RESTAURANT_STORAGE_KEY && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (parsed && typeof parsed === 'object') {
+            setRestaurant((prev) => ({
+              ...prev,
+              ...parsed,
+              theme_preferences: {
+                ...(prev.theme_preferences || {}),
+                ...(parsed.theme_preferences || {}),
+              },
+            }));
+          }
+        } catch {}
+      } else if (e.key === MENU_ITEMS_STORAGE_KEY && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed)) {
+            setMenuItems(parsed);
+          }
+        } catch {}
+      } else if (e.key === CATEGORIES_STORAGE_KEY && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed)) {
+            setCategories(parsed);
+          }
+        } catch {}
       }
-    } else {
-      // Use demo data — also check localStorage for any saved changes
-      const savedItems = localStorage.getItem('demo_menu_items');
-      const savedCategories = localStorage.getItem('demo_categories');
-      const savedRestaurant = localStorage.getItem('demo_restaurant');
-      if (savedItems) setMenuItems(JSON.parse(savedItems));
-      if (savedCategories) setCategories(JSON.parse(savedCategories));
-      if (savedRestaurant) setRestaurant(JSON.parse(savedRestaurant));
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
+  // ── Supabase Realtime: subscribe to live changes ──
+  useEffect(() => {
+    if (!isSupabaseConfigured || !supabase) return;
+
+    const channel = supabase.channel('menu-realtime');
+
+    // --- Restaurants ---
+    channel.on(
+      'postgres_changes' as any,
+      { event: '*', schema: 'public', table: 'restaurants' },
+      (payload: any) => {
+        if (payload.eventType === 'UPDATE' && payload.new) {
+          const resolvedLogo =
+            !payload.new.logo_url || payload.new.logo_url.includes('photo-1554118811-1e0d58224f24')
+              ? CAFE_CHOCO_CRAZE_RESTAURANT.logo_url
+              : payload.new.logo_url;
+          const resolvedAddress =
+            !payload.new.address || payload.new.address.includes('Main Road')
+              ? CAFE_CHOCO_CRAZE_RESTAURANT.address
+              : payload.new.address;
+          const resolvedPhone =
+            !payload.new.phone || payload.new.phone.includes('98765')
+              ? '9850568355'
+              : payload.new.phone;
+          const resolvedHours =
+            !payload.new.opening_hours || payload.new.opening_hours.includes('10:00 AM – 11:30 PM')
+              ? '12:00 PM – 9:30 PM · Tue Closed'
+              : payload.new.opening_hours;
+          setRestaurant((prev) => ({
+            ...prev,
+            ...payload.new,
+            logo_url: resolvedLogo,
+            address: resolvedAddress,
+            phone: resolvedPhone,
+            opening_hours: resolvedHours,
+          }));
+        }
+      }
+    );
+
+    // --- Categories ---
+    channel.on(
+      'postgres_changes' as any,
+      { event: '*', schema: 'public', table: 'categories' },
+      (payload: any) => {
+        if (payload.eventType === 'INSERT' && payload.new) {
+          setCategories((prev) => {
+            if (prev.some((c) => c.id === payload.new.id)) return prev;
+            return [...prev, payload.new as Category].sort(
+              (a, b) => a.display_order - b.display_order
+            );
+          });
+        } else if (payload.eventType === 'UPDATE' && payload.new) {
+          setCategories((prev) =>
+            prev
+              .map((c) => (c.id === payload.new.id ? { ...c, ...payload.new } : c))
+              .sort((a, b) => a.display_order - b.display_order)
+          );
+        } else if (payload.eventType === 'DELETE' && payload.old) {
+          setCategories((prev) => prev.filter((c) => c.id !== payload.old.id));
+        }
+      }
+    );
+
+    // --- Menu Items ---
+    channel.on(
+      'postgres_changes' as any,
+      { event: '*', schema: 'public', table: 'menu_items' },
+      (payload: any) => {
+        if (payload.eventType === 'INSERT' && payload.new) {
+          const newItem = {
+            ...(payload.new as MenuItem),
+            labels: sanitizeCulinaryLabels(payload.new.labels),
+          };
+          setMenuItems((prev) => {
+            if (prev.some((m) => m.id === newItem.id)) return prev;
+            return [...prev, newItem];
+          });
+        } else if (payload.eventType === 'UPDATE' && payload.new) {
+          const updatedItem = {
+            ...(payload.new as MenuItem),
+            labels: sanitizeCulinaryLabels(payload.new.labels),
+          };
+          setMenuItems((prev) =>
+            prev.map((m) => (m.id === updatedItem.id ? updatedItem : m))
+          );
+        } else if (payload.eventType === 'DELETE' && payload.old) {
+          setMenuItems((prev) => prev.filter((m) => m.id !== payload.old.id));
+        }
+      }
+    );
+
+    channel.subscribe();
+
+    return () => {
+      supabase!.removeChannel(channel);
+    };
+  }, []);
+
+  async function getEffectiveRestaurantId(): Promise<string> {
+    const fromRef = toValidUuidOrNull(restaurantIdRef.current);
+    if (fromRef) return fromRef;
+
+    const fromState = toValidUuidOrNull(restaurant.id);
+    if (fromState) return fromState;
+
+    if (isSupabaseConfigured && supabase) {
+      const { data } = await supabase.from('restaurants').select('id').limit(1).maybeSingle();
+      if (data?.id) {
+        restaurantIdRef.current = data.id;
+        return data.id;
+      }
     }
-    setIsLoading(false);
+    return 'a24ce60e-813d-4662-ade1-177fb45c7a10';
   }
 
-  // Persist demo data to localStorage
-  function persistDemo(items?: MenuItem[], cats?: Category[], rest?: Restaurant) {
-    if (!isSupabaseConfigured) {
-      if (items) localStorage.setItem('demo_menu_items', JSON.stringify(items));
-      if (cats) localStorage.setItem('demo_categories', JSON.stringify(cats));
-      if (rest) localStorage.setItem('demo_restaurant', JSON.stringify(rest));
+  async function loadData() {
+    if (!isSupabaseConfigured || !supabase) {
+      setRestaurant(CAFE_CHOCO_CRAZE_RESTAURANT);
+      setCategories(CAFE_CHOCO_CRAZE_CATEGORIES);
+      setMenuItems(CAFE_CHOCO_CRAZE_MENU_ITEMS);
+      setIsLoading(false);
+      return;
     }
+
+    try {
+      // Load restaurant
+      const { data: restData, error: restErr } = await supabase
+        .from('restaurants')
+        .select('*')
+        .limit(1)
+        .maybeSingle();
+
+      if (restErr || !restData) {
+        console.warn('No restaurant found in Supabase, using defaults', restErr);
+        setRestaurant(getPersistedRestaurant(CAFE_CHOCO_CRAZE_RESTAURANT));
+      } else {
+        const resolvedLogo =
+          !restData.logo_url || restData.logo_url.includes('photo-1554118811-1e0d58224f24')
+            ? CAFE_CHOCO_CRAZE_RESTAURANT.logo_url
+            : restData.logo_url;
+        const resolvedAddress =
+          !restData.address || restData.address.includes('Main Road')
+            ? CAFE_CHOCO_CRAZE_RESTAURANT.address
+            : restData.address;
+        const resolvedPhone =
+          !restData.phone || restData.phone.includes('98765')
+            ? '9850568355'
+            : restData.phone;
+        const resolvedHours =
+          !restData.opening_hours || restData.opening_hours.includes('10:00 AM – 11:30 PM')
+            ? '12:00 PM – 9:30 PM · Tue Closed'
+            : restData.opening_hours;
+
+        const dbRestaurant: Restaurant = {
+          ...restData,
+          logo_url: resolvedLogo,
+          address: resolvedAddress,
+          phone: resolvedPhone,
+          opening_hours: resolvedHours,
+        };
+
+        setRestaurant(getPersistedRestaurant(dbRestaurant));
+        restaurantIdRef.current = restData.id;
+      }
+
+      // Load categories
+      const { data: catData, error: catErr } = await supabase
+        .from('categories')
+        .select('*')
+        .order('display_order');
+
+      if (catErr) {
+        console.error('Error loading categories:', catErr);
+      }
+
+      if (catData && catData.length > 0) {
+        setCategories(catData);
+      } else {
+        setCategories(getPersistedCategories(CAFE_CHOCO_CRAZE_CATEGORIES));
+      }
+
+      // Load menu items
+      const { data: itemData, error: itemErr } = await supabase
+        .from('menu_items')
+        .select('*')
+        .order('display_order');
+
+      if (itemErr) {
+        console.error('Error loading menu items:', itemErr);
+      }
+
+      if (itemData && itemData.length > 0) {
+        const cleaned = itemData.map((item) => ({
+          ...item,
+          labels: sanitizeCulinaryLabels(item.labels),
+        }));
+        const merged = mergeWithLocalMenuItemOverrides(cleaned);
+        setMenuItems(merged);
+      } else {
+        setMenuItems(getPersistedMenuItems(CAFE_CHOCO_CRAZE_MENU_ITEMS));
+      }
+    } catch (err) {
+      console.error('Error loading data from Supabase:', err);
+      setRestaurant(getPersistedRestaurant(CAFE_CHOCO_CRAZE_RESTAURANT));
+      setCategories(getPersistedCategories(CAFE_CHOCO_CRAZE_CATEGORIES));
+      setMenuItems(getPersistedMenuItems(CAFE_CHOCO_CRAZE_MENU_ITEMS));
+    }
+
+    setIsLoading(false);
   }
 
   // ── Toast management ──
@@ -117,25 +423,62 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   // ── Restaurant ──
   async function updateRestaurant(data: Partial<Restaurant>) {
-    const updated = { ...restaurant, ...data, updated_at: new Date().toISOString() };
-    if (isSupabaseConfigured && supabase) {
-      const { error } = await supabase.from('restaurants').update(data).eq('id', restaurant.id);
-      if (error) { addToast('Failed to update restaurant.', 'error'); return; }
+    const restId = await getEffectiveRestaurantId();
+    const updated: Restaurant = {
+      ...restaurant,
+      ...data,
+      id: restId,
+      theme_preferences: {
+        ...(restaurant.theme_preferences || {}),
+        ...(data.theme_preferences || {}),
+      },
+      updated_at: new Date().toISOString(),
+    };
+
+    // 1. Immediately persist to localStorage so settings survive page refresh 100%
+    try {
+      localStorage.setItem(RESTAURANT_STORAGE_KEY, JSON.stringify(updated));
+    } catch (e) {
+      console.warn('Failed to save restaurant settings to localStorage:', e);
     }
+
+    // 2. Update React state immediately
     setRestaurant(updated);
-    persistDemo(undefined, undefined, updated);
-    addToast('Restaurant profile updated!', 'success');
+
+    // 3. Sync to Supabase
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { error } = await supabase.from('restaurants').update(data).eq('id', restId);
+        if (error) {
+          console.warn('Supabase restaurant update note:', error.message);
+        }
+      } catch (err) {
+        console.warn('Supabase update failed:', err);
+      }
+    }
+
+    const isProfileUpdate = Boolean(
+      data.name || data.address || data.phone || data.opening_hours || data.logo_url || data.banner_url || data.description
+    );
+    if (isProfileUpdate) {
+      addToast('Restaurant profile updated!', 'success');
+    }
   }
 
   // ── Categories ──
   async function addCategory(name: string): Promise<Category | null> {
+    const trimmedName = name.trim();
+    if (!trimmedName) return null;
+
+    const restId = await getEffectiveRestaurantId();
     const newCat: Category = {
       id: generateId(),
-      restaurant_id: restaurant.id,
-      name,
+      restaurant_id: restId,
+      name: trimmedName,
       display_order: categories.length + 1,
       created_at: new Date().toISOString(),
     };
+
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase.from('categories').insert(newCat).select().single();
       if (error) {
@@ -145,10 +488,13 @@ export function DataProvider({ children }: { children: ReactNode }) {
       }
       if (data) newCat.id = data.id;
     }
-    const updated = [...categories, newCat];
-    setCategories(updated);
-    persistDemo(undefined, updated);
-    addToast(`Category "${name}" added!`, 'success');
+
+    setCategories((prev) => {
+      const next = [...prev, newCat];
+      savePersistedCategories(next);
+      return next;
+    });
+    addToast(`Category "${trimmedName}" added!`, 'success');
     return newCat;
   }
 
@@ -160,13 +506,22 @@ export function DataProvider({ children }: { children: ReactNode }) {
   }
 
   async function updateCategory(id: string, name: string) {
+    const trimmedName = name.trim();
+    if (!trimmedName) return;
+
     if (isSupabaseConfigured && supabase) {
-      const { error } = await supabase.from('categories').update({ name }).eq('id', id);
-      if (error) { addToast('Failed to update category.', 'error'); return; }
+      const { error } = await supabase.from('categories').update({ name: trimmedName }).eq('id', id);
+      if (error) {
+        console.error('Failed to update category:', error);
+        addToast(`Failed to update category: ${error.message}`, 'error');
+        return;
+      }
     }
-    const updated = categories.map((c) => (c.id === id ? { ...c, name } : c));
-    setCategories(updated);
-    persistDemo(undefined, updated);
+    setCategories((prev) => {
+      const next = prev.map((c) => (c.id === id ? { ...c, name: trimmedName } : c));
+      savePersistedCategories(next);
+      return next;
+    });
     addToast('Category updated!', 'success');
   }
 
@@ -178,13 +533,21 @@ export function DataProvider({ children }: { children: ReactNode }) {
         error: `This category has ${itemsInCategory.length} menu item(s). Please reassign or delete them first.`,
       };
     }
+
     if (isSupabaseConfigured && supabase) {
       const { error } = await supabase.from('categories').delete().eq('id', id);
-      if (error) { addToast('Failed to delete category.', 'error'); return { success: false, error: error.message }; }
+      if (error) {
+        console.error('Failed to delete category:', error);
+        addToast(`Failed to delete category: ${error.message}`, 'error');
+        return { success: false, error: error.message };
+      }
     }
-    const updated = categories.filter((c) => c.id !== id);
-    setCategories(updated);
-    persistDemo(undefined, updated);
+
+    setCategories((prev) => {
+      const next = prev.filter((c) => c.id !== id);
+      savePersistedCategories(next);
+      return next;
+    });
     addToast('Category deleted.', 'success');
     return { success: true };
   }
@@ -192,60 +555,138 @@ export function DataProvider({ children }: { children: ReactNode }) {
   async function reorderCategories(reordered: Category[]) {
     const updated = reordered.map((c, i) => ({ ...c, display_order: i + 1 }));
     setCategories(updated);
-    persistDemo(undefined, updated);
+    savePersistedCategories(updated);
+
     if (isSupabaseConfigured && supabase) {
       for (const cat of updated) {
-        await supabase.from('categories').update({ display_order: cat.display_order }).eq('id', cat.id);
+        const { error } = await supabase.from('categories').update({ display_order: cat.display_order }).eq('id', cat.id);
+        if (error) {
+          console.error('Failed to update category order:', error);
+        }
       }
     }
   }
 
   // ── Menu Items ──
   async function addMenuItem(data: MenuItemFormData) {
+    const restId = await getEffectiveRestaurantId();
+    const resolvedCatId = toValidUuidOrNull(data.category_id);
+    const newId = generateId();
+
     const newItem: MenuItem = {
-      id: generateId(),
-      restaurant_id: restaurant.id,
-      ...data,
+      id: newId,
+      restaurant_id: restId,
+      name: data.name.trim(),
+      description: data.description.trim(),
+      price: Number(data.price),
+      discounted_price: data.discounted_price && Number(data.discounted_price) > 0 ? Number(data.discounted_price) : null,
+      category_id: resolvedCatId || '',
+      image_url: data.image_url?.trim() || '',
+      food_type: data.food_type || 'veg',
+      is_available: data.is_available ?? true,
+      is_featured: data.is_featured ?? false,
+      spice_level: data.spice_level || 'none',
+      labels: Array.isArray(data.labels) ? data.labels : [],
       display_order: menuItems.length + 1,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
+
     if (isSupabaseConfigured && supabase) {
-      const { data: inserted, error } = await supabase.from('menu_items').insert(newItem).select().single();
+      const dbPayload = {
+        id: newItem.id,
+        restaurant_id: newItem.restaurant_id,
+        name: newItem.name,
+        description: newItem.description,
+        price: newItem.price,
+        discounted_price: newItem.discounted_price,
+        category_id: resolvedCatId, // valid UUID or null
+        image_url: newItem.image_url,
+        food_type: newItem.food_type,
+        is_available: newItem.is_available,
+        is_featured: newItem.is_featured,
+        spice_level: newItem.spice_level,
+        labels: newItem.labels,
+        display_order: newItem.display_order,
+      };
+
+      const { data: inserted, error } = await supabase
+        .from('menu_items')
+        .insert(dbPayload)
+        .select()
+        .single();
+
       if (error) {
         console.error('Failed to add menu item:', error);
         addToast(`Failed to add menu item: ${error.message}`, 'error');
         return;
       }
-      if (inserted) newItem.id = inserted.id;
+      if (inserted) {
+        newItem.id = inserted.id;
+      }
     }
-    const updated = [...menuItems, newItem];
-    setMenuItems(updated);
-    persistDemo(updated);
-    addToast(`"${data.name}" added to menu!`, 'success');
+
+    setMenuItems((prev) => {
+      const next = [...prev, newItem];
+      savePersistedMenuItems(next);
+      return next;
+    });
+    addToast(`"${newItem.name}" added to menu!`, 'success');
   }
 
   async function updateMenuItem(id: string, data: Partial<MenuItemFormData>) {
-    if (isSupabaseConfigured && supabase) {
-      const { error } = await supabase.from('menu_items').update({ ...data, updated_at: new Date().toISOString() }).eq('id', id);
-      if (error) { addToast('Failed to update menu item.', 'error'); return; }
+    const payload: Partial<MenuItem> = { ...data };
+    if (data.category_id !== undefined) {
+      payload.category_id = toValidUuidOrNull(data.category_id) || '';
     }
-    const updated = menuItems.map((item) =>
-      item.id === id ? { ...item, ...data, updated_at: new Date().toISOString() } : item
-    );
-    setMenuItems(updated);
-    persistDemo(updated);
+    if (data.discounted_price !== undefined) {
+      payload.discounted_price = data.discounted_price && Number(data.discounted_price) > 0 ? Number(data.discounted_price) : null;
+    }
+
+    if (isSupabaseConfigured && supabase) {
+      const dbPayload: Record<string, unknown> = {
+        ...data,
+        updated_at: new Date().toISOString(),
+      };
+      if (data.category_id !== undefined) {
+        dbPayload.category_id = toValidUuidOrNull(data.category_id);
+      }
+      if (data.discounted_price !== undefined) {
+        dbPayload.discounted_price = data.discounted_price && Number(data.discounted_price) > 0 ? Number(data.discounted_price) : null;
+      }
+
+      const { error } = await supabase.from('menu_items').update(dbPayload).eq('id', id);
+      if (error) {
+        console.error('Failed to update menu item:', error);
+        addToast(`Failed to update menu item: ${error.message}`, 'error');
+        return;
+      }
+    }
+
+    setMenuItems((prev) => {
+      const next = prev.map((item) =>
+        item.id === id ? { ...item, ...payload, updated_at: new Date().toISOString() } : item
+      );
+      savePersistedMenuItems(next);
+      return next;
+    });
     addToast('Menu item updated!', 'success');
   }
 
   async function deleteMenuItem(id: string) {
     if (isSupabaseConfigured && supabase) {
       const { error } = await supabase.from('menu_items').delete().eq('id', id);
-      if (error) { addToast('Failed to delete menu item.', 'error'); return; }
+      if (error) {
+        console.error('Failed to delete menu item:', error);
+        addToast(`Failed to delete menu item: ${error.message}`, 'error');
+        return;
+      }
     }
-    const updated = menuItems.filter((item) => item.id !== id);
-    setMenuItems(updated);
-    persistDemo(updated);
+    setMenuItems((prev) => {
+      const next = prev.filter((item) => item.id !== id);
+      savePersistedMenuItems(next);
+      return next;
+    });
     addToast('Menu item deleted.', 'success');
   }
 

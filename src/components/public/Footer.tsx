@@ -3,23 +3,28 @@ import { MapPin, Phone, Clock, UtensilsCrossed, ShieldCheck } from 'lucide-react
 import { InstagramIcon, FacebookIcon, TwitterIcon } from '../common/SocialIcons';
 import { useData } from '../../context/DataContext';
 
-export default function Footer() {
+interface FooterProps {
+  onOpenLocation?: () => void;
+  onOpenSchedule?: () => void;
+}
+
+export default function Footer({ onOpenLocation, onOpenSchedule }: FooterProps) {
   const { restaurant } = useData();
   const year = new Date().getFullYear();
 
   return (
     <footer
       id="contact"
-      className="border-t mt-16"
+      className="border-t mt-20"
       style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-default)' }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2.5 mb-4">
               {restaurant.logo_url ? (
-                <img src={restaurant.logo_url} alt={restaurant.name} className="h-10 w-10 rounded-lg object-cover" />
+                <img src={restaurant.logo_url} alt={restaurant.name} className="h-10 w-10 rounded-xl object-cover ring-1 ring-black/10 bg-white" />
               ) : (
                 <div
                   className="h-10 w-10 rounded-lg flex items-center justify-center"
@@ -29,7 +34,7 @@ export default function Footer() {
                 </div>
               )}
               <span
-                className="text-xl font-bold"
+                className="text-xl font-semibold tracking-tight"
                 style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
               >
                 {restaurant.name}
@@ -82,19 +87,26 @@ export default function Footer() {
           </div>
 
           {/* Contact info */}
-          <div id="about">
+          <div>
             <h3
               className="text-base font-semibold mb-4"
               style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
             >
-              Contact Us
+              Visit & connect
             </h3>
             <div className="space-y-3">
               {restaurant.address && (
-                <div className="flex items-start gap-3">
-                  <MapPin size={16} className="shrink-0 mt-0.5" style={{ color: 'var(--accent)' }} />
-                  <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>{restaurant.address}</span>
-                </div>
+                <button
+                  type="button"
+                  onClick={onOpenLocation}
+                  className="flex items-start gap-3 text-left group cursor-pointer"
+                  title="Click for directions to Cafe Choco Craze on Google Maps"
+                >
+                  <MapPin size={16} className="shrink-0 mt-0.5 group-hover:scale-110 transition-transform" style={{ color: 'var(--accent)' }} />
+                  <span className="text-sm transition-colors group-hover:underline" style={{ color: 'var(--text-secondary)' }}>
+                    {restaurant.address}
+                  </span>
+                </button>
               )}
               {restaurant.phone && (
                 <div className="flex items-center gap-3">
@@ -117,13 +129,30 @@ export default function Footer() {
               className="text-base font-semibold mb-4"
               style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
             >
-              Opening Hours
+              Find your favourite
             </h3>
             {restaurant.opening_hours && (
-              <div className="flex items-start gap-3">
-                <Clock size={16} className="shrink-0 mt-0.5" style={{ color: 'var(--accent)' }} />
-                <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>{restaurant.opening_hours}</span>
-              </div>
+              <button
+                type="button"
+                onClick={onOpenSchedule}
+                className="flex items-start gap-3 text-left group cursor-pointer"
+                title="Click to view weekly schedule & holiday hours"
+              >
+                <Clock size={16} className="shrink-0 mt-0.5 group-hover:scale-110 transition-transform" style={{ color: 'var(--accent)' }} />
+                <div>
+                  <span className="text-sm block group-hover:underline" style={{ color: 'var(--text-secondary)' }}>
+                    {restaurant.opening_hours}
+                  </span>
+                  <span className="text-xs font-semibold block mt-1" style={{ color: 'var(--accent)' }}>
+                    View Weekly Schedule ↗
+                  </span>
+                </div>
+              </button>
+            )}
+            {!restaurant.opening_hours && (
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                Browse the full beverage menu above and ask the cafe team about today’s availability.
+              </p>
             )}
           </div>
         </div>

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════
-   THE SPICE HOUSE – Design System
-   Premium Restaurant Digital Menu
+   CAFE CHOCO CRAZE – Design System
+   Ultra-premium digital beverage menu
    ═══════════════════════════════════════════════════════ */
 
 @theme {
@@ -12,8 +12,8 @@
   --color-gold-200: #f4dfa8;
   --color-gold-300: #edc972;
   --color-gold-400: #e6b340;
-  --color-gold-500: #d4982a;
-  --color-gold-600: #b8781f;
+   --color-gold-500: #b8873f;
+   --color-gold-600: #95682b;
   --color-gold-700: #975a1c;
   --color-gold-800: #7c481e;
   --color-gold-900: #683c1e;
@@ -45,7 +45,7 @@
   --color-spicy: #f97316;
 
   /* Typography */
-  --font-display: 'Playfair Display', Georgia, serif;
+   --font-display: 'Playfair Display', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
 
   /* Spacing */
@@ -64,36 +64,45 @@
 /* ─── Base ─── */
 html {
   scroll-behavior: smooth;
+  background: var(--bg-primary);
 }
 
 body {
   font-family: var(--font-body);
+  margin: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--accent-light);
+  color: var(--text-primary);
 }
 
 /* ─── Light Mode (default) ─── */
 html.light,
 html:not(.dark) {
-  --bg-primary: var(--color-cream-50);
-  --bg-secondary: #ffffff;
+  --bg-primary: #ffffff;
+  --bg-secondary: #faf9f6;
   --bg-card: #ffffff;
   --bg-input: #ffffff;
-  --bg-hover: var(--color-cream-100);
-  --bg-nav: rgba(255, 255, 255, 0.85);
-  --text-primary: #1a1a1a;
-  --text-secondary: #4a4a4a;
-  --text-muted: #7a7a7a;
+  --bg-hover: #f7f4ee;
+  --bg-nav: rgba(255, 255, 255, 0.88);
+  --text-primary: #1c1917;
+  --text-secondary: #44403c;
+  --text-muted: #6b6359;
   --text-inverse: #ffffff;
-  --border-default: #e5e5e5;
-  --border-subtle: #f0f0f0;
+  --border-default: #e5ded4;
+  --border-subtle: #f2ede6;
   --accent: var(--color-gold-500);
   --accent-hover: var(--color-gold-600);
   --accent-light: var(--color-gold-100);
   --accent-bg: var(--color-gold-50);
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-lg: 0 8px 30px rgba(0,0,0,0.1);
+  --shadow-md: 0 10px 28px rgba(83, 54, 24, 0.09);
+  --shadow-lg: 0 18px 50px rgba(83, 54, 24, 0.14);
   color-scheme: light;
 }
 
@@ -101,15 +110,15 @@ html:not(.dark) {
 html.dark {
   --bg-primary: var(--color-charcoal-950);
   --bg-secondary: var(--color-charcoal-900);
-  --bg-card: var(--color-charcoal-850);
+  --bg-card: #202022;
   --bg-input: var(--color-charcoal-800);
   --bg-hover: var(--color-charcoal-800);
-  --bg-nav: rgba(13, 14, 15, 0.9);
-  --text-primary: #f0f0f0;
-  --text-secondary: #b0b0b0;
-  --text-muted: #777777;
+  --bg-nav: rgba(13, 13, 14, 0.9);
+  --text-primary: #faf8f5;
+  --text-secondary: #d6cec5;
+  --text-muted: #a3988c;
   --text-inverse: #0d0e0f;
-  --border-default: #2a2b2e;
+  --border-default: #2e3035;
   --border-subtle: #1e1f22;
   --accent: var(--color-gold-400);
   --accent-hover: var(--color-gold-500);
@@ -141,6 +150,19 @@ html.dark {
 .border-default { border-color: var(--border-default); }
 .border-subtle { border-color: var(--border-subtle); }
 .border-accent { border-color: var(--accent); }
+
+section[id], footer[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
 
 /* ─── Component Styles ─── */
 
@@ -309,7 +331,27 @@ input:focus, select:focus, textarea:focus {
   );
 }
 
+.hero-glow {
+  background:
+    radial-gradient(circle at 78% 24%, rgba(214, 161, 82, 0.35), transparent 26%),
+    radial-gradient(circle at 92% 82%, rgba(125, 64, 25, 0.46), transparent 31%),
+    linear-gradient(120deg, #1d100b 0%, #3b1e14 47%, #160d0a 100%);
+}
+
+.premium-rule {
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
 /* Image placeholder */
 .img-placeholder {
   background: linear-gradient(135deg, var(--accent-light) 0%, var(--bg-hover) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

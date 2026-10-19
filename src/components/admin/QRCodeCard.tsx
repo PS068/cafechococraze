@@ -8,7 +8,7 @@ export default function QRCodeCard() {
   const [copied, setCopied] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  const defaultBaseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://ps-resto.vercel.app';
+  const defaultBaseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://cafe-choco-craze.vercel.app';
   const savedDomain = (restaurant.theme_preferences?.custom_domain as string) || '';
   const [customDomain, setCustomDomain] = useState(savedDomain);
   const [isEditingDomain, setIsEditingDomain] = useState(false);
@@ -21,7 +21,7 @@ export default function QRCodeCard() {
 
   // Use configured domain if provided, otherwise fallback to current browser origin
   const activeOrigin = customDomain.trim() ? customDomain.trim().replace(/\/$/, '') : defaultBaseUrl;
-  const publicUrl = `${activeOrigin}/menu/${restaurant.slug || 'ps-resto'}`;
+  const publicUrl = `${activeOrigin}/menu/${restaurant.slug || 'cafe-choco-craze'}`;
 
   const handleSaveDomain = async () => {
     await updateRestaurant({
@@ -169,7 +169,7 @@ export default function QRCodeCard() {
                       type="url"
                       value={customDomain}
                       onChange={(e) => setCustomDomain(e.target.value)}
-                      placeholder="https://ps-resto.vercel.app"
+                      placeholder="https://cafe-choco-craze.vercel.app"
                       className="flex-1 px-3 py-2 text-xs rounded-xl border outline-none font-mono"
                       style={{
                         backgroundColor: 'var(--bg-input)',

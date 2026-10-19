@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { UtensilsCrossed, Lock, Mail, Eye, EyeOff, ArrowLeft, ShieldCheck } from 'lucide-react';
+import { Coffee, Lock, Mail, Eye, EyeOff, ArrowLeft, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
 import ThemeToggle from '../../components/common/ThemeToggle';
@@ -73,7 +73,7 @@ export default function AdminLoginPage() {
             className="w-14 h-14 rounded-2xl mx-auto flex items-center justify-center shadow-lg mb-4"
             style={{ backgroundColor: 'var(--accent)', color: 'var(--text-inverse)' }}
           >
-            <UtensilsCrossed size={28} />
+             <Coffee size={28} />
           </div>
           <h1
             className="text-2xl sm:text-3xl font-bold"
@@ -122,7 +122,7 @@ export default function AdminLoginPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@thespicehouse.com"
+                   placeholder="owner@cafechococraze.com"
                   required
                   className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border transition-colors"
                   style={{
@@ -194,6 +194,40 @@ export default function AdminLoginPage() {
                 </>
               )}
             </button>
+
+            {/* Quick Credentials Info / Auto-fill */}
+            <div
+              className="mt-5 p-3.5 rounded-2xl border text-xs flex flex-col gap-2"
+              style={{
+                backgroundColor: 'var(--bg-secondary)',
+                borderColor: 'var(--border-default)',
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-semibold" style={{ color: 'var(--text-secondary)' }}>
+                  Manager Credentials:
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmail('admin@cafechococraze.com');
+                    setPassword('CafeChocoCraze2024!');
+                  }}
+                  className="px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-xs"
+                  style={{
+                    backgroundColor: 'var(--accent)',
+                    color: 'var(--text-inverse)',
+                    borderColor: 'var(--accent)',
+                  }}
+                >
+                  Auto-fill
+                </button>
+              </div>
+              <div className="space-y-0.5" style={{ color: 'var(--text-muted)' }}>
+                <div><span className="font-medium text-[11px]">Email:</span> <code className="select-all font-mono font-semibold" style={{ color: 'var(--text-primary)' }}>admin@cafechococraze.com</code></div>
+                <div><span className="font-medium text-[11px]">Password:</span> <code className="select-all font-mono font-semibold" style={{ color: 'var(--text-primary)' }}>CafeChocoCraze2024!</code></div>
+              </div>
+            </div>
           </form>
         </div>
 

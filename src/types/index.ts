@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════
-// Type definitions for The Spice House digital menu
+// Type definitions for the digital menu data model
 // ═══════════════════════════════════════════════════════
 
 export type FoodType = 'veg' | 'nonveg' | 'none';

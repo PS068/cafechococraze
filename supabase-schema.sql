@@ -1,5 +1,5 @@
 -- ═════════════════════════════════════════════════════════════════
--- THE SPICE HOUSE - DIGITAL RESTAURANT MENU SUPABASE SCHEMA
+-- CAFE CHOCO CRAZE - DIGITAL CAFE MENU SUPABASE SCHEMA
 -- ═════════════════════════════════════════════════════════════════
 -- Run this in your Supabase project's SQL Editor (SQL > New Query)
 -- ═════════════════════════════════════════════════════════════════

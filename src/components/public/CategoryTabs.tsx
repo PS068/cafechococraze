@@ -23,15 +23,15 @@ export default function CategoryTabs({ categories, activeCategory, onSelect }: C
   return (
     <div
       ref={scrollRef}
-      className="flex gap-2 overflow-x-auto hide-scrollbar pb-1"
+      className="flex gap-2.5 overflow-x-auto hide-scrollbar pb-1"
     >
       {/* All tab */}
       <button
         ref={activeCategory === null ? activeRef : undefined}
         onClick={() => onSelect(null)}
-        className="shrink-0 px-5 py-2.5 text-sm font-medium rounded-full border transition-all duration-200 whitespace-nowrap"
+        className="shrink-0 px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-full border transition-all duration-200 whitespace-nowrap cursor-pointer shadow-2xs"
         style={{
-          backgroundColor: activeCategory === null ? 'var(--accent)' : 'transparent',
+          backgroundColor: activeCategory === null ? 'var(--accent)' : 'var(--bg-card)',
           color: activeCategory === null ? 'var(--text-inverse)' : 'var(--text-secondary)',
           borderColor: activeCategory === null ? 'var(--accent)' : 'var(--border-default)',
         }}
@@ -44,9 +44,9 @@ export default function CategoryTabs({ categories, activeCategory, onSelect }: C
           key={cat.id}
           ref={activeCategory === cat.id ? activeRef : undefined}
           onClick={() => onSelect(cat.id)}
-          className="shrink-0 px-5 py-2.5 text-sm font-medium rounded-full border transition-all duration-200 whitespace-nowrap"
+          className="shrink-0 px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-full border transition-all duration-200 whitespace-nowrap cursor-pointer shadow-2xs"
           style={{
-            backgroundColor: activeCategory === cat.id ? 'var(--accent)' : 'transparent',
+            backgroundColor: activeCategory === cat.id ? 'var(--accent)' : 'var(--bg-card)',
             color: activeCategory === cat.id ? 'var(--text-inverse)' : 'var(--text-secondary)',
             borderColor: activeCategory === cat.id ? 'var(--accent)' : 'var(--border-default)',
           }}

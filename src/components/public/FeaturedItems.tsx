@@ -1,6 +1,7 @@
 import { Sparkles } from 'lucide-react';
 import MenuItemCard from './MenuItemCard';
 import type { MenuItem } from '../../types';
+import { groupMenuItemVariants, isPizzaVariantGroup } from '../../lib/menuVariants';
 
 interface FeaturedItemsProps {
   items: MenuItem[];
@@ -10,32 +11,55 @@ interface FeaturedItemsProps {
 export default function FeaturedItems({ items, onSelectItem }: FeaturedItemsProps) {
   if (items.length === 0) return null;
 
+  const variantGroups = groupMenuItemVariants(items);
+  const nonPizzaGroups = variantGroups.filter((g) => !isPizzaVariantGroup(g));
+  const pizzaGroups = variantGroups.filter((g) => isPizzaVariantGroup(g));
+
   return (
-    <section className="mb-12">
-      <div className="flex items-center gap-2 mb-6">
-        <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center"
-          style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent)' }}
-        >
-          <Sparkles size={18} />
-        </div>
+    <section className="mb-14 sm:mb-16">
+      <div className="flex items-center gap-2.5 mb-6">
+        <span className="w-1.5 h-6 bg-amber-500 rounded-full inline-block shrink-0" />
         <div>
           <h2
-            className="text-2xl font-bold"
-            style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
+            className="text-2xl font-bold tracking-tight text-stone-900 dark:text-stone-100"
+            style={{ fontFamily: 'var(--font-display)' }}
           >
-            Chef's Recommendations
+            Signature Cafe Craze
           </h2>
-          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-            Signature dishes curated especially for your dining experience
+          <p className="text-xs sm:text-sm text-stone-500 mt-0.5">
+            Top cold coffees, thick shakes, chocolicks &amp; handcrafted cafe specialties
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 stagger-children">
-        {items.map((item) => (
-          <MenuItemCard key={item.id} item={item} onSelect={onSelectItem} />
-        ))}
+      <div className="space-y-6">
+        {/* Non-pizza items in full rows of 4 */}
+        {nonPizzaGroups.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
+            {nonPizzaGroups.map(({ item, variants }) => (
+              <MenuItemCard
+                key={item.id}
+                item={item}
+                variants={variants}
+                onSelect={onSelectItem}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Dedicated row(s) for pizzas — never mixed with non-pizza items */}
+        {pizzaGroups.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
+            {pizzaGroups.map(({ item, variants }) => (
+              <MenuItemCard
+                key={item.id}
+                item={item}
+                variants={variants}
+                onSelect={onSelectItem}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

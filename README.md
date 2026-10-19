@@ -1,11 +1,11 @@
 <div align="center">
 
-  # 🍽️ PS Resto — Digital QR Restaurant Menu & Manager Portal
+
   
   **A lightning-fast, mobile-first digital menu and management suite for modern dining.**
 
-  [![Live Demo](https://img.shields.io/badge/Live%20Demo-ps--resto.vercel.app-f59e0b?style=for-the-badge&logo=vercel&logoColor=white)](https://ps-resto.vercel.app/)
-  [![GitHub Repository](https://img.shields.io/badge/GitHub-PS068%2Fps--resto-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/PS068/ps-resto)
+  [![Live Demo](https://img.shields.io/badge/Live%20Demo-cafe--choco--craze.vercel.app-f59e0b?style=for-the-badge&logo=vercel&logoColor=white)](https://cafe-choco-craze.vercel.app/)
+  [![GitHub Repository](https://img.shields.io/badge/GitHub-PS068%2Fcafe--choco--craze-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/PS068/cafe-choco-craze)
   [![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
   [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -13,7 +13,7 @@
 
   ---
 
-  [🌟 Live Public Menu](https://ps-resto.vercel.app/) • [🔐 Admin Portal](https://ps-resto.vercel.app/admin/login) • [📖 Documentation](#-getting-started) • [📱 Features](#-key-features)
+  [🌟 Live Public Menu](https://cafe-choco-craze.vercel.app/) • [🔐 Admin Portal](https://cafe-choco-craze.vercel.app/admin/login) • [📖 Documentation](#-getting-started) • [📱 Features](#-key-features)
 
 </div>
 
@@ -21,9 +21,11 @@
 
 ## 📖 Overview
 
-**PS Resto** is a next-generation contactless digital menu and real-time manager operations web application designed for restaurants, cafes, and bars in Sangli and beyond.
+**Cafe Choco Craze** is a premium, mobile-first digital menu and real-time manager operations web application for a focused beverage experience.
 
 Guests scan a QR code at their table to browse an interactive, high-definition menu with live dietary tags, spice ratings, descriptions, and one-tap waiter assistance. Restaurant managers get an intuitive, mobile-optimized control center to manage dishes, update prices on the fly, toggle store status, and generate printable table QR cards in seconds.
+
+The exact Cafe Choco Craze beverage catalog is available in demo mode and can be applied to an existing Supabase project with [`supabase-cafe-choco-craze-seed.sql`](./supabase-cafe-choco-craze-seed.sql). The seed preserves the existing tables, authentication, and RLS configuration.
 
 ---
 
@@ -48,7 +50,7 @@ Guests scan a QR code at their table to browse an interactive, high-definition m
 * **🏷️ Menu Items & Category Organizer:** Add, edit, reorder, or delete dishes and categories with instant live sync.
 * **📊 Dashboard Analytics:** Quick snapshot of total menu items, categories, out-of-stock items, and popular dishes.
 * **📲 Dynamic QR Code Generator:**
-  * Generates QR codes pointing directly to your live Vercel URL (`https://ps-resto.vercel.app/menu/ps-resto`).
+  * Generates QR codes pointing directly to your live Vercel URL (`https://cafe-choco-craze.vercel.app/menu/cafe-choco-craze`).
   * One-click **Download high-res PNG** and **Print Table Tent Cards** ready for placement on dining tables.
 
 ---
@@ -75,8 +77,8 @@ Guests scan a QR code at their table to browse an interactive, high-definition m
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/PS068/ps-resto.git
-cd ps-resto
+git clone https://github.com/PS068/cafe-choco-craze.git
+cd cafe-choco-craze
 ```
 
 ### 2. Install dependencies
@@ -126,12 +128,12 @@ INSERT INTO public.restaurants (
     cuisine_type
 ) VALUES (
     'YOUR_USER_UID_HERE',
-    'PS Resto',
-    'ps-resto',
-    'Delicious Flavors, Unforgettable Dining',
-    'Welcome to PS Resto, Sangli. Experience authentic culinary delights prepared with the freshest ingredients.',
+    'Cafe Choco Craze',
+    'cafe-choco-craze',
+    'Delicious Beverages, Unforgettable Moments',
+    'Cafe Choco Craze beverage menu.',
     'Main Road, Sangli, Maharashtra 416416',
-    'Multi-Cuisine, North Indian, Chinese, Tandoori'
+    'Cafe, Coffee, Shakes, Beverages & Desserts'
 );
 ```
 
@@ -140,9 +142,9 @@ INSERT INTO public.restaurants (
 ## 📂 Project Structure
 
 ```text
-ps-resto/
+cafe-choco-craze/
 ├── public/                  # Favicon & static assets
-│   └── favicon.svg          # PS Resto brand logo
+│   └── favicon.svg          # Cafe Choco Craze brand logo
 ├── src/
 │   ├── assets/              # SVGs and images
 │   ├── components/
@@ -174,11 +176,11 @@ ps-resto/
 
 1. Push your repository to GitHub.
 2. Sign in to [Vercel](https://vercel.com) and click **"Add New Project"**.
-3. Import `PS068/ps-resto`.
+3. Import `PS068/cafe-choco-craze`.
 4. Add the two environment variables:
    * `VITE_SUPABASE_URL`
    * `VITE_SUPABASE_ANON_KEY`
-5. Click **Deploy**. Your menu will be live at `https://ps-resto.vercel.app/`!
+5. Click **Deploy**. Your menu will be live at `https://cafe-choco-craze.vercel.app/`!
 
 ---
 
@@ -189,5 +191,5 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 <div align="center">
-  <sub>Crafted with passion for <strong>PS Resto</strong> • Sangli, Maharashtra 🇮🇳</sub>
+  <sub>Crafted with passion for <strong>Cafe Choco Craze</strong></sub>
 </div>

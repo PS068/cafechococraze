@@ -16,10 +16,10 @@ export default function MenuSearch({ value, onChange }: MenuSearchProps) {
       <input
         id="menu-search"
         type="text"
-        placeholder="Search menu items..."
+        placeholder="Search cold coffee, shakes, fries, waffles..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full pl-11 pr-10 py-3 text-sm rounded-xl border transition-all duration-200"
+         className="w-full pl-11 pr-10 py-3.5 text-sm rounded-2xl border transition-all duration-200 shadow-sm"
         style={{
           backgroundColor: 'var(--bg-card)',
           borderColor: 'var(--border-default)',

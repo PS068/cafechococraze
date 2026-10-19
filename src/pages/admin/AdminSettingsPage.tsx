@@ -54,8 +54,8 @@ const defaultSettings: ManagerSettings = {
   taxNote: 'All prices are inclusive of applicable taxes & GST',
   menuLayout: 'grid',
   showGuestWifi: true,
-  wifiSsid: 'PS_Resto_Guest_5G',
-  wifiPassword: 'Welcome@PSResto',
+  wifiSsid: 'Cafe_Choco_Craze_Guest',
+  wifiPassword: 'Welcome@CafeChocoCraze',
   enableCallWaiter: true,
   managerWhatsapp: '+91 98765 43210',
   soundAlerts: true,
@@ -181,10 +181,33 @@ export default function AdminSettingsPage() {
           {/* Toggle Switch */}
           <button
             type="button"
-            onClick={() => updateField('isOpen', !settings.isOpen)}
-            className={`w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-200 focus:outline-none ${
-              settings.isOpen ? 'bg-emerald-500' : 'bg-zinc-300 dark:bg-zinc-700'
+            onClick={async () => {
+              const newIsOpen = !settings.isOpen;
+              setSettings((prev) => ({ ...prev, isOpen: newIsOpen }));
+              try {
+                await updateRestaurant({
+                  theme_preferences: {
+                    ...(restaurant.theme_preferences || {}),
+                    ...settings,
+                    isOpen: newIsOpen,
+                  },
+                });
+                addToast(
+                  newIsOpen
+                    ? 'Store is now OPEN and accepting orders!'
+                    : 'Store marked as TEMPORARILY CLOSED. Red alert is now live across website & admin panel.',
+                  newIsOpen ? 'success' : 'error'
+                );
+              } catch (err) {
+                console.error(err);
+                addToast('Failed to update store status', 'error');
+              }
+            }}
+            className={`w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-200 focus:outline-none cursor-pointer ${
+              settings.isOpen ? 'bg-emerald-500' : 'bg-red-500'
             }`}
+            title={settings.isOpen ? 'Click to mark store temporarily closed' : 'Click to reopen store'}
+            aria-label={settings.isOpen ? 'Store is open' : 'Store is temporarily closed'}
           >
             <div
               className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-200 ${
@@ -423,7 +446,7 @@ export default function AdminSettingsPage() {
                 type="text"
                 value={settings.wifiSsid}
                 onChange={(e) => updateField('wifiSsid', e.target.value)}
-                placeholder="e.g. SpiceHouse_Guest"
+                placeholder="e.g. CafeChocoCraze_Guest"
                 className="w-full px-3.5 py-2 text-xs rounded-xl border outline-none"
                 style={{
                   backgroundColor: 'var(--bg-input)',
@@ -557,7 +580,7 @@ export default function AdminSettingsPage() {
         >
           <div>
             <span className="font-semibold block" style={{ color: 'var(--text-primary)' }}>
-              {userEmail || 'Restaurant Manager'}
+              {userEmail || 'Cafe Manager'}
             </span>
             <span className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
               Authorized Manager Portal Session
@@ -575,7 +598,7 @@ export default function AdminSettingsPage() {
         </div>
 
         <p className="text-[11px] text-center" style={{ color: 'var(--text-muted)' }}>
-          Digital Restaurant Menu • Mobile Manager Edition v1.2.0
+          Digital Cafe Menu • Mobile Manager Edition v1.2.0
         </p>
       </div>
 

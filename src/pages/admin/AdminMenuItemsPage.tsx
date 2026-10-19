@@ -95,7 +95,7 @@ export default function AdminMenuItemsPage() {
             }}
           >
             <Sparkles size={17} />
-            <span>⚡ Pre-Built Food Library</span>
+            <span>⚡ Pre-Built Cafe Library</span>
           </button>
 
           <button
@@ -105,7 +105,7 @@ export default function AdminMenuItemsPage() {
             style={{ backgroundColor: 'var(--accent)', color: 'var(--text-inverse)' }}
           >
             <Plus size={18} />
-            <span>Add Custom Dish</span>
+            <span>Add Custom Item</span>
           </button>
         </div>
       </div>
@@ -183,6 +183,7 @@ export default function AdminMenuItemsPage() {
 
             {/* Modal Body Form */}
             <MenuItemForm
+              key={editingItem ? `edit-${editingItem.id}` : preFilledData ? `prefill-${preFilledData.name}` : 'new-item'}
               initialData={initialFormData}
               onSubmit={handleSubmit}
               onCancel={handleCloseModal}

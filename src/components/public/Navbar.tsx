@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, UtensilsCrossed } from 'lucide-react';
+import { Menu, X, Coffee } from 'lucide-react';
 import ThemeToggle from '../common/ThemeToggle';
 import { useData } from '../../context/DataContext';
 
@@ -32,22 +32,26 @@ export default function Navbar() {
         borderColor: 'var(--border-default)',
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-[4.75rem]">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
+          <Link to="/" className="flex items-center gap-3.5 group" aria-label={`${restaurant.name} home`}>
             {restaurant.logo_url ? (
-              <img src={restaurant.logo_url} alt={restaurant.name} className="h-9 w-9 rounded-lg object-cover" />
+              <img
+                src={restaurant.logo_url}
+                alt={restaurant.name}
+                className="h-11 w-11 rounded-2xl object-contain p-0.5 ring-1 ring-black/10 shadow-xs bg-white"
+              />
             ) : (
               <div
-                className="h-9 w-9 rounded-lg flex items-center justify-center"
+                className="h-11 w-11 rounded-2xl flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: 'var(--accent)', color: 'var(--text-inverse)' }}
               >
-                <UtensilsCrossed size={18} />
+                <Coffee size={22} strokeWidth={1.8} />
               </div>
             )}
             <span
-              className="text-lg font-semibold tracking-tight group-hover:opacity-80 transition-opacity"
+              className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight group-hover:opacity-85 transition-opacity"
               style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
             >
               {restaurant.name}
@@ -55,12 +59,12 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-2">
             {navLinks.map((link) => (
               <button
                 key={link.href}
                 onClick={() => scrollToSection(link.href)}
-                className="px-4 py-2 text-sm font-medium rounded-lg transition-colors"
+                className="px-4 py-2 text-sm sm:text-base font-medium rounded-xl transition-colors cursor-pointer"
                 style={{ color: 'var(--text-secondary)' }}
                 onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.backgroundColor = 'var(--accent-light)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
@@ -68,9 +72,8 @@ export default function Navbar() {
                 {link.label}
               </button>
             ))}
-            <div className="ml-2">
-              <ThemeToggle />
-            </div>
+
+            <ThemeToggle />
           </nav>
 
           {/* Mobile actions */}
@@ -81,7 +84,8 @@ export default function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
               className="p-2 rounded-lg transition-colors"
               style={{ color: 'var(--text-primary)' }}
-              aria-label="Toggle menu"
+               aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+               aria-expanded={isOpen}
             >
               {isOpen ? <X size={22} /> : <Menu size={22} />}
             </button>

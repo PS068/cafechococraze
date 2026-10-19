@@ -4,6 +4,7 @@ import type { MenuItemFormData, FoodType, SpiceLevel } from '../../types';
 import { useData } from '../../context/DataContext';
 import { FOOD_CATALOG } from '../../data/foodCatalog';
 import DishPhotoPicker from './DishPhotoPicker';
+import { formatINR } from '../../lib/formatters';
 
 interface MenuItemFormProps {
   initialData?: MenuItemFormData;
@@ -33,10 +34,6 @@ export default function MenuItemForm({ initialData, onSubmit, onCancel, submitLa
   const [form, setForm] = useState<MenuItemFormData>(initialData || defaultFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (initialData) setForm(initialData);
-  }, [initialData]);
 
   function validate(): boolean {
     const errs: Record<string, string> = {};
@@ -90,10 +87,10 @@ export default function MenuItemForm({ initialData, onSubmit, onCancel, submitLa
           <Sparkles size={18} style={{ color: 'var(--accent)' }} className="shrink-0" />
           <div>
             <span className="text-xs font-bold block" style={{ color: 'var(--text-primary)' }}>
-              ⚡ Quick-Fill from Food Catalog
+              ⚡ Quick-Fill from Cafe Catalog
             </span>
             <span className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
-              Select a dish to pre-fill photo, description, category & price
+              Select an item to pre-fill photo, description, category & price
             </span>
           </div>
         </div>
@@ -126,11 +123,11 @@ export default function MenuItemForm({ initialData, onSubmit, onCancel, submitLa
           }}
         >
           <option value="" disabled>
-            Choose a dish to pre-fill...
+            Choose a cafe item to pre-fill...
           </option>
           {FOOD_CATALOG.map((item) => (
             <option key={item.id} value={item.id}>
-              {item.name} ({item.categoryName} • ₹{item.price})
+              {item.name} ({item.categoryName} • {formatINR(item.price)})
             </option>
           ))}
         </select>
@@ -144,7 +141,7 @@ export default function MenuItemForm({ initialData, onSubmit, onCancel, submitLa
           type="text"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
-          placeholder="e.g., Butter Chicken"
+          placeholder="e.g., Crunchy Frolic Thick Cold Coffee"
           className="w-full px-4 py-2.5 text-sm rounded-xl border"
           style={inputStyle}
         />
@@ -159,7 +156,7 @@ export default function MenuItemForm({ initialData, onSubmit, onCancel, submitLa
         <textarea
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
-          placeholder="Describe your dish..."
+          placeholder="Describe your cafe item..."
           rows={3}
           className="w-full px-4 py-2.5 text-sm rounded-xl border resize-none"
           style={inputStyle}

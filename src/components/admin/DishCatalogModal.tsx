@@ -13,6 +13,7 @@ import {
 import { FOOD_CATALOG, type CatalogItem } from '../../data/foodCatalog';
 import { useData } from '../../context/DataContext';
 import type { MenuItemFormData } from '../../types';
+import { formatINR } from '../../lib/formatters';
 
 interface DishCatalogModalProps {
   isOpen: boolean;
@@ -135,11 +136,11 @@ export default function DishCatalogModal({
                 className="text-xl sm:text-2xl font-bold"
                 style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
               >
-                Pre-Built Food Library
+                Pre-Built Cafe Library
               </h2>
             </div>
             <p className="text-xs sm:text-sm" style={{ color: 'var(--text-muted)' }}>
-              Add popular dishes with photos, descriptions, and dietary tags in <strong>1 click</strong>, or customize their price first.
+              Add signature Cafe Choco Craze beverages, shakes, crispy bites, and waffles in <strong>1 click</strong>, or customize their price first.
             </p>
           </div>
 
@@ -320,7 +321,7 @@ export default function DishCatalogModal({
                           className="text-xs font-bold shrink-0 px-2 py-0.5 rounded-md"
                           style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent)' }}
                         >
-                          ₹{item.price}
+                          {formatINR(item.price)}
                         </span>
                       </div>
 
