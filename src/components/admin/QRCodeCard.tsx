@@ -8,7 +8,7 @@ export default function QRCodeCard() {
   const [copied, setCopied] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  const defaultBaseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://cafe-choco-craze.vercel.app';
+  const defaultBaseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://chococraze.xyz';
   const savedDomain = (restaurant.theme_preferences?.custom_domain as string) || '';
   const [customDomain, setCustomDomain] = useState(savedDomain);
   const [isEditingDomain, setIsEditingDomain] = useState(false);
@@ -169,7 +169,7 @@ export default function QRCodeCard() {
                       type="url"
                       value={customDomain}
                       onChange={(e) => setCustomDomain(e.target.value)}
-                      placeholder="https://cafe-choco-craze.vercel.app"
+                      placeholder="https://chococraze.xyz"
                       className="flex-1 px-3 py-2 text-xs rounded-xl border outline-none font-mono"
                       style={{
                         backgroundColor: 'var(--bg-input)',

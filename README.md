@@ -4,8 +4,8 @@
   
   **A lightning-fast, mobile-first digital menu and management suite for modern dining.**
 
-  [![Live Demo](https://img.shields.io/badge/Live%20Demo-cafe--choco--craze.vercel.app-f59e0b?style=for-the-badge&logo=vercel&logoColor=white)](https://cafe-choco-craze.vercel.app/)
-  [![GitHub Repository](https://img.shields.io/badge/GitHub-PS068%2Fcafe--choco--craze-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/PS068/cafe-choco-craze)
+  [![Live Demo](https://img.shields.io/badge/Live%20Demo-chococraze.xyz-f59e0b?style=for-the-badge&logo=googlechrome&logoColor=white)](https://chococraze.xyz/)
+  [![GitHub Repository](https://img.shields.io/badge/GitHub-PS068%2Fcafechococraze-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/PS068/cafechococraze)
   [![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
   [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -13,7 +13,7 @@
 
   ---
 
-  [🌟 Live Public Menu](https://cafe-choco-craze.vercel.app/) • [🔐 Admin Portal](https://cafe-choco-craze.vercel.app/admin/login) • [📖 Documentation](#-getting-started) • [📱 Features](#-key-features)
+  [🌟 Live Public Menu](https://chococraze.xyz/) • [🔐 Admin Portal](https://chococraze.xyz/admin/login) • [📖 Documentation](#-getting-started) • [📱 Features](#-key-features)
 
 </div>
 
@@ -50,7 +50,7 @@ The exact Cafe Choco Craze beverage catalog is available in demo mode and can be
 * **🏷️ Menu Items & Category Organizer:** Add, edit, reorder, or delete dishes and categories with instant live sync.
 * **📊 Dashboard Analytics:** Quick snapshot of total menu items, categories, out-of-stock items, and popular dishes.
 * **📲 Dynamic QR Code Generator:**
-  * Generates QR codes pointing directly to your live Vercel URL (`https://cafe-choco-craze.vercel.app/menu/cafe-choco-craze`).
+  * Generates QR codes pointing directly to your live production URL (`https://chococraze.xyz/menu/cafe-choco-craze`).
   * One-click **Download high-res PNG** and **Print Table Tent Cards** ready for placement on dining tables.
 
 ---
@@ -77,8 +77,8 @@ The exact Cafe Choco Craze beverage catalog is available in demo mode and can be
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/PS068/cafe-choco-craze.git
-cd cafe-choco-craze
+git clone https://github.com/PS068/cafechococraze.git
+cd cafechococraze
 ```
 
 ### 2. Install dependencies
@@ -172,15 +172,19 @@ cafe-choco-craze/
 
 ---
 
-## 🌐 Deployment to Vercel
+## 🌐 Deployment & Live Site
 
-1. Push your repository to GitHub.
+The project is deployed and live on custom domain **[chococraze.xyz](https://chococraze.xyz/)**.
+
+### Deploying Your Own Instance
+1. Push your repository to GitHub (`PS068/cafechococraze`).
 2. Sign in to [Vercel](https://vercel.com) and click **"Add New Project"**.
-3. Import `PS068/cafe-choco-craze`.
-4. Add the two environment variables:
+3. Import `PS068/cafechococraze`.
+4. Configure your custom domain `chococraze.xyz` under Project Settings > Domains.
+5. Add the environment variables:
    * `VITE_SUPABASE_URL`
    * `VITE_SUPABASE_ANON_KEY`
-5. Click **Deploy**. Your menu will be live at `https://cafe-choco-craze.vercel.app/`!
+6. Click **Deploy**. Your menu is live at `https://chococraze.xyz/`!
 
 ---
 
