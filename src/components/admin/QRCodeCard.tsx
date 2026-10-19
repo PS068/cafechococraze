@@ -28,8 +28,8 @@ export default function QRCodeCard() {
   const topQrCanvasRef = useRef<HTMLDivElement>(null);
   const bottomQrCanvasRef = useRef<HTMLDivElement>(null);
 
-  const defaultBaseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://chococraze.xyz';
-  const savedDomain = (restaurant.theme_preferences?.custom_domain as string) || '';
+  const PRODUCTION_DOMAIN = 'https://chococraze.xyz';
+  const savedDomain = (restaurant.theme_preferences?.custom_domain as string) || PRODUCTION_DOMAIN;
   const [customDomain, setCustomDomain] = useState(savedDomain);
   const [isEditingDomain, setIsEditingDomain] = useState(false);
 
@@ -39,9 +39,9 @@ export default function QRCodeCard() {
     }
   }, [restaurant.theme_preferences]);
 
-  // Use configured domain if provided, otherwise fallback to current origin
-  const activeOrigin = customDomain.trim() ? customDomain.trim().replace(/\/$/, '') : defaultBaseUrl;
-  const publicUrl = `${activeOrigin}/menu/${restaurant.slug || 'cafe-choco-craze'}`;
+  // Use configured domain if provided, default to production domain https://chococraze.xyz
+  const activeOrigin = customDomain.trim() ? customDomain.trim().replace(/\/$/, '') : PRODUCTION_DOMAIN;
+  const publicUrl = activeOrigin;
 
   const handleSaveDomain = async () => {
     await updateRestaurant({

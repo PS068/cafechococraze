@@ -42,6 +42,7 @@ export const CAFE_CHOCO_CRAZE_RESTAURANT: Restaurant = {
     showGuestWifi: true,
     wifiSsid: 'Cafe_Choco_Craze_Guest',
     wifiPassword: 'Welcome@CafeChocoCraze',
+    custom_domain: 'https://chococraze.xyz',
   },
   created_at: CREATED_AT,
   updated_at: CREATED_AT,
