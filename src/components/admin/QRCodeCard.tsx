@@ -84,7 +84,7 @@ export default function QRCodeCard() {
   };
 
   // Generate and download full 4"x9" stand sticker at 300 DPI (1200 x 2700 px)
-  // Physical stand: 4" wide. Top 3" folds over curve to back (upside down on sheet). Bottom 6" is upright front.
+  // Borderless, clean white, featuring the official website logo on both back and front faces
   const handleDownload10x6Standee = () => {
     setIsGeneratingPng(true);
 
@@ -98,253 +98,167 @@ export default function QRCodeCard() {
 
       const brandTitle = restaurant.name || 'Cafe Choco Craze';
       const cleanUrl = activeOrigin.replace(/^https?:\/\//, '');
+      const logoSrc = restaurant.logo_url || '/cafe-choco-craze-logo.png';
 
-      // 4" width x 9" length @ 300 DPI = 1200 x 2700 px
-      const canvas = document.createElement('canvas');
-      canvas.width = 1200;
-      canvas.height = 2700;
-      const ctx = canvas.getContext('2d');
+      // Preload website logo image for canvas rendering
+      const logoImg = new Image();
+      logoImg.crossOrigin = 'anonymous';
+      logoImg.src = logoSrc;
 
-      if (!ctx) {
-        addToast('Canvas context not available', 'error');
+      const renderCanvasWithLogo = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1200;
+        canvas.height = 2700;
+        const ctx = canvas.getContext('2d');
+
+        if (!ctx) {
+          addToast('Canvas context not available', 'error');
+          setIsGeneratingPng(false);
+          return;
+        }
+
+        // Clean white background (no border)
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, 1200, 2700);
+
+        // ==========================================
+        // SECTION 1: TOP 3" (0 to 900px)
+        // BACK OF STAND (Flipped 180° for top curve fold)
+        // Website Logo + Cafe Name ONLY
+        // ==========================================
+        ctx.save();
+        ctx.translate(600, 450); // Center of 3" back section
+        ctx.rotate(Math.PI);     // 180° rotation so when folded over top curve it reads upright
+
+        // Website logo on back face
+        const backLogoSize = 240;
+        if (logoImg.complete && logoImg.naturalWidth > 0) {
+          ctx.drawImage(logoImg, -backLogoSize / 2, -260, backLogoSize, backLogoSize);
+        }
+
+        // "Cafe"
+        ctx.fillStyle = '#b45309';
+        ctx.font = 'italic 36px "Playfair Display", Georgia, serif';
+        ctx.letterSpacing = '4px';
+        ctx.textAlign = 'center';
+        ctx.fillText('Cafe', 0, 40);
+
+        // "CHOCO CRAZE"
+        ctx.fillStyle = '#1e130c';
+        ctx.font = '900 76px "Playfair Display", Georgia, serif';
+        ctx.letterSpacing = '4px';
+        ctx.fillText('CHOCO CRAZE', 0, 120);
+
+        // Tagline
+        ctx.fillStyle = '#7c481e';
+        ctx.font = 'italic 28px "Playfair Display", Georgia, serif';
+        ctx.letterSpacing = '2px';
+        ctx.fillText('Crafted with Love   •   Served with Joy', 0, 185);
+
+        ctx.restore();
+
+        // ==========================================
+        // SECTION 2: BOTTOM 6" (900px to 2700px)
+        // FRONT OF STAND (Upright)
+        // Website Logo + Welcome + MENU + QR + URL
+        // ==========================================
+        ctx.save();
+        ctx.translate(600, 1800);
+
+        // Website logo on front face
+        const frontLogoSize = 200;
+        if (logoImg.complete && logoImg.naturalWidth > 0) {
+          ctx.drawImage(logoImg, -frontLogoSize / 2, -800, frontLogoSize, frontLogoSize);
+        }
+
+        ctx.textAlign = 'center';
+
+        // Cafe Name on Front Face
+        ctx.fillStyle = '#b45309';
+        ctx.font = 'italic 30px "Playfair Display", Georgia, serif';
+        ctx.letterSpacing = '3px';
+        ctx.fillText('WELCOME TO', 0, -560);
+
+        ctx.fillStyle = '#1e130c';
+        ctx.font = '900 64px "Playfair Display", Georgia, serif';
+        ctx.letterSpacing = '3px';
+        ctx.fillText('CAFE CHOCO CRAZE', 0, -500);
+
+        // Tagline
+        ctx.fillStyle = '#92400e';
+        ctx.font = 'italic 26px "Playfair Display", Georgia, serif';
+        ctx.letterSpacing = '2px';
+        ctx.fillText('Delicious Cold Coffee   •   Irresistibly Sweet', 0, -455);
+
+        // Word MENU - High attention hero
+        ctx.fillStyle = '#1e130c';
+        ctx.font = '900 135px "Playfair Display", Georgia, serif';
+        ctx.letterSpacing = '10px';
+        ctx.fillText('MENU', 0, -320);
+
+        // QR Code Box (Single clean card)
+        const qrBox = 560;
+        const qrY = -250;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(-qrBox / 2, qrY, qrBox, qrBox);
+        ctx.strokeStyle = '#1e130c';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(-qrBox / 2, qrY, qrBox, qrBox);
+
+        // Draw high-res QR
+        const qrImg = 520;
+        ctx.drawImage(bottomQrCanvas, -qrImg / 2, qrY + (qrBox - qrImg) / 2, qrImg, qrImg);
+
+        // URL
+        ctx.fillStyle = '#b45309';
+        ctx.font = 'bold 36px "Inter", sans-serif';
+        ctx.letterSpacing = '2px';
+        ctx.fillText(cleanUrl, 0, 370);
+
+        // SCAN FOR MENU
+        ctx.fillStyle = '#1e130c';
+        ctx.font = '800 54px "Inter", sans-serif';
+        ctx.letterSpacing = '6px';
+        ctx.fillText('SCAN FOR MENU', 0, 445);
+
+        // Point camera
+        ctx.fillStyle = '#4b5563';
+        ctx.font = 'italic 32px "Playfair Display", Georgia, serif';
+        ctx.fillText('Point your camera to view items', 0, 500);
+
+        // Tagline at footer
+        ctx.fillStyle = '#92400e';
+        ctx.font = 'bold 26px "Inter", sans-serif';
+        ctx.letterSpacing = '2px';
+        ctx.fillText('Thick Cold Coffees   •   Shakes   •   100% Pure Veg', 0, 570);
+
+        ctx.restore();
+
+        // Trigger download of the 4x9 standee image
+        const dataUrl = canvas.toDataURL('image/png');
+        const downloadLink = document.createElement('a');
+        downloadLink.href = dataUrl;
+        downloadLink.download = `${restaurant.slug || 'cafe-choco-craze'}-4x9-stand-sticker.png`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        addToast('4×9 Stand Sticker downloaded at 300 DPI!', 'success');
         setIsGeneratingPng(false);
-        return;
+      };
+
+      if (logoImg.complete) {
+        renderCanvasWithLogo();
+      } else {
+        logoImg.onload = renderCanvasWithLogo;
+        logoImg.onerror = () => {
+          // If logo fails to load, render without failing
+          renderCanvasWithLogo();
+        };
       }
-
-      // Background: Crisp clean white
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, 1200, 2700);
-
-      // FULL GOLDEN BORDER (around entire 4x9 sticker)
-      // 1. Outer hairline gold
-      ctx.strokeStyle = '#d4a243';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(16, 16, 1200 - 32, 2700 - 32);
-
-      // 2. Ornate gold band
-      ctx.strokeStyle = '#b8873f';
-      ctx.lineWidth = 10;
-      ctx.strokeRect(26, 26, 1200 - 52, 2700 - 52);
-
-      // 3. Inner hairline gold
-      ctx.strokeStyle = '#e6b340';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(36, 36, 1200 - 72, 2700 - 72);
-
-      // Corner stars
-      ctx.fillStyle = '#b8873f';
-      ctx.font = '32px serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('✦', 54, 62);
-      ctx.fillText('✦', 1200 - 54, 62);
-      ctx.fillText('✦', 54, 2700 - 44);
-      ctx.fillText('✦', 1200 - 54, 2700 - 44);
-
-      // Curve fold guideline (y = 900px, 3 inches from top)
-      const foldY = 900;
-
-      // ==========================================
-      // SECTION 1: TOP 3" (0 to 900px)
-      // BACK OF STAND (Flipped 180° for top curve fold)
-      // Cafe Name + Logo ONLY (NO QR, NO WIFI)
-      // ==========================================
-      ctx.save();
-      ctx.translate(600, 450); // Center of 3" back section
-      ctx.rotate(Math.PI);     // 180° rotation so when folded over top curve it reads upright
-
-      // Coffee emblem circle
-      const embY = -160;
-      ctx.beginPath();
-      ctx.arc(0, embY, 115, 0, Math.PI * 2);
-      ctx.fillStyle = '#fdf8f0';
-      ctx.fill();
-      ctx.strokeStyle = '#b8873f';
-      ctx.lineWidth = 4;
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.arc(0, embY, 102, 0, Math.PI * 2);
-      ctx.strokeStyle = '#e6b340';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      // Coffee Cup inside emblem
-      ctx.fillStyle = '#7c481e';
-      ctx.beginPath();
-      ctx.moveTo(-50, embY - 5);
-      ctx.bezierCurveTo(-50, embY + 60, 50, embY + 60, 50, embY - 5);
-      ctx.closePath();
-      ctx.fill();
-      ctx.strokeStyle = '#b8873f';
-      ctx.lineWidth = 3;
-      ctx.stroke();
-
-      // Saucer
-      ctx.beginPath();
-      ctx.ellipse(0, embY + 68, 65, 12, 0, 0, Math.PI * 2);
-      ctx.fillStyle = '#95682b';
-      ctx.fill();
-      ctx.stroke();
-
-      // Cup handle
-      ctx.beginPath();
-      ctx.arc(55, embY + 20, 18, -Math.PI / 2, Math.PI / 2);
-      ctx.strokeStyle = '#b8873f';
-      ctx.lineWidth = 6;
-      ctx.stroke();
-
-      // Steam swirls
-      ctx.strokeStyle = '#b8873f';
-      ctx.lineWidth = 3;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(-20, embY - 18);
-      ctx.bezierCurveTo(-28, embY - 42, -12, embY - 58, -20, embY - 78);
-      ctx.moveTo(0, embY - 18);
-      ctx.bezierCurveTo(-8, embY - 42, 8, embY - 58, 0, embY - 82);
-      ctx.moveTo(20, embY - 18);
-      ctx.bezierCurveTo(12, embY - 42, 28, embY - 58, 20, embY - 78);
-      ctx.stroke();
-
-      // "Cafe"
-      ctx.fillStyle = '#b45309';
-      ctx.font = 'italic 38px "Playfair Display", Georgia, serif';
-      ctx.letterSpacing = '4px';
-      ctx.fillText('Cafe', 0, 20);
-
-      // "CHOCO CRAZE"
-      ctx.fillStyle = '#1e130c';
-      ctx.font = '900 78px "Playfair Display", Georgia, serif';
-      ctx.letterSpacing = '5px';
-      ctx.fillText('CHOCO CRAZE', 0, 105);
-
-      // Flourish divider
-      ctx.strokeStyle = '#b8873f';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(-180, 150);
-      ctx.lineTo(-25, 150);
-      ctx.moveTo(25, 150);
-      ctx.lineTo(180, 150);
-      ctx.stroke();
-      ctx.fillStyle = '#b8873f';
-      ctx.font = '24px serif';
-      ctx.fillText('✦', 0, 158);
-
-      // Tagline
-      ctx.fillStyle = '#7c481e';
-      ctx.font = 'italic 28px "Playfair Display", Georgia, serif';
-      ctx.letterSpacing = '2px';
-      ctx.fillText('Crafted with Love   •   Served with Joy', 0, 210);
-
-      ctx.restore();
-
-      // ==========================================
-      // SECTION 2: BOTTOM 6" (900px to 2700px)
-      // FRONT OF STAND (Upright)
-      // CAFE NAME + MENU + QR + COFFEE & PIZZA ELEMENTS
-      // Center y = 1800px, height = 1800px
-      // ==========================================
-      ctx.save();
-      ctx.translate(600, 1800);
-
-      // Top Cafe Name on Front Face
-      ctx.fillStyle = '#b45309';
-      ctx.font = 'italic 32px "Playfair Display", Georgia, serif';
-      ctx.letterSpacing = '3px';
-      ctx.fillText('WELCOME TO', 0, -710);
-
-      ctx.fillStyle = '#1e130c';
-      ctx.font = '900 68px "Playfair Display", Georgia, serif';
-      ctx.letterSpacing = '4px';
-      ctx.fillText('CAFE CHOCO CRAZE', 0, -640);
-
-      // Tagline
-      ctx.fillStyle = '#92400e';
-      ctx.font = 'italic 28px "Playfair Display", Georgia, serif';
-      ctx.letterSpacing = '2px';
-      ctx.fillText('Delicious Cold Coffee   •   Irresistibly Sweet', 0, -590);
-
-      // Gold divider
-      ctx.strokeStyle = '#d4a243';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(-320, -565);
-      ctx.lineTo(320, -565);
-      ctx.stroke();
-
-      // Word MENU - High attention hero
-      ctx.fillStyle = '#1e130c';
-      ctx.font = '900 150px "Playfair Display", Georgia, serif';
-      ctx.letterSpacing = '10px';
-      ctx.fillText('MENU', 0, -440);
-
-      // Laser scan beam line (Clean horizontal lines, no WiFi icon)
-      ctx.strokeStyle = '#b8873f';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(-280, -395);
-      ctx.lineTo(280, -395);
-      ctx.stroke();
-
-      // QR Code Box (Single clean card)
-      const qrBox = 540;
-      const qrY = -360;
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(-qrBox / 2, qrY, qrBox, qrBox);
-      ctx.strokeStyle = '#1e130c';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(-qrBox / 2, qrY, qrBox, qrBox);
-
-      // Draw high-res QR
-      const qrImg = 500;
-      ctx.drawImage(bottomQrCanvas, -qrImg / 2, qrY + (qrBox - qrImg) / 2, qrImg, qrImg);
-
-      // URL
-      ctx.fillStyle = '#b45309';
-      ctx.font = 'bold 36px "Inter", sans-serif';
-      ctx.letterSpacing = '2px';
-      ctx.fillText(cleanUrl, 0, 250);
-
-      // SCAN FOR MENU
-      ctx.fillStyle = '#1e130c';
-      ctx.font = '800 56px "Inter", sans-serif';
-      ctx.letterSpacing = '6px';
-      ctx.fillText('SCAN FOR MENU', 0, 335);
-
-      // Point camera
-      ctx.fillStyle = '#4b5563';
-      ctx.font = 'italic 34px "Playfair Display", Georgia, serif';
-      ctx.fillText('Point your camera to view items', 0, 395);
-
-      // Tagline at footer
-      ctx.fillStyle = '#92400e';
-      ctx.font = 'bold 28px "Inter", sans-serif';
-      ctx.letterSpacing = '2px';
-      ctx.fillText('Thick Cold Coffees   •   Shakes   •   100% Pure Veg', 0, 480);
-
-      // Footer brand name
-      ctx.fillStyle = '#9ca3af';
-      ctx.font = 'bold 24px "Inter", sans-serif';
-      ctx.letterSpacing = '3px';
-      ctx.fillText(`Table Standee  •  ${cleanUrl}`, 0, 540);
-
-      ctx.restore();
-
-      // Trigger download of the 4x9 standee image
-      const dataUrl = canvas.toDataURL('image/png');
-      const downloadLink = document.createElement('a');
-      downloadLink.href = dataUrl;
-      downloadLink.download = `${restaurant.slug || 'cafe-choco-craze'}-4x9-stand-sticker.png`;
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-
-      addToast('4×9 Stand Sticker downloaded at 300 DPI!', 'success');
     } catch (err) {
       console.error('Failed to generate 4x9 standee', err);
       addToast('Failed to generate 4×9 image', 'error');
-    } finally {
       setIsGeneratingPng(false);
     }
   };
@@ -566,7 +480,7 @@ export default function QRCodeCard() {
         </div>
       </div>
 
-      {/* 4" x 9" VERTICAL STANDEE STICKER CONTAINER */}
+      {/* 4" x 9" VERTICAL STANDEE STICKER CONTAINER (Clean white, borderless) */}
       <div
         className="print-standee-card mx-auto rounded-3xl relative overflow-hidden transition-all text-center select-none shadow-xl border border-gray-200"
         style={{
@@ -577,51 +491,33 @@ export default function QRCodeCard() {
           color: '#1a1a1a',
         }}
       >
-        {/* Full Golden Border on the whole 4x9 sheet */}
-        <div className="absolute inset-[6px] rounded-2xl border-[1.5px] border-[#d4a243] pointer-events-none z-20" />
+        {/* Subtle curve fold guideline (hidden during print) */}
         <div
-          className="absolute inset-[10px] rounded-xl border-[4px] border-transparent pointer-events-none z-21"
+          className="no-print absolute left-6 right-6 top-[33.33%] h-[1px] pointer-events-none z-15"
           style={{
             background:
-              'repeating-linear-gradient(45deg, #b8873f 0px, #f4dfa8 3px, #e6b340 6px, #975a1c 9px, #b8873f 12px) border-box',
-            WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
-            WebkitMaskComposite: 'destination-out',
-            maskComposite: 'exclude',
-          }}
-        />
-        <div className="absolute inset-[16px] rounded-lg border border-[#e6b340]/50 pointer-events-none z-22" />
-
-        {/* Corner Flourishes */}
-        <span className="absolute top-1 left-2 text-[#b8873f] text-xs z-30 select-none">✦</span>
-        <span className="absolute top-1 right-2 text-[#b8873f] text-xs z-30 select-none">✦</span>
-        <span className="absolute bottom-1 left-2 text-[#b8873f] text-xs z-30 select-none">✦</span>
-        <span className="absolute bottom-1 right-2 text-[#b8873f] text-xs z-30 select-none">✦</span>
-
-        {/* FOLD CURVE GUIDELINE (at 33.3% height) */}
-        <div
-          className="absolute left-6 right-6 top-[33.33%] h-[1px] pointer-events-none z-15"
-          style={{
-            background:
-              'linear-gradient(90deg, transparent, rgba(184,135,63,0.3) 15%, #b8873f 50%, rgba(184,135,63,0.3) 85%, transparent)',
+              'linear-gradient(90deg, transparent, rgba(180,83,9,0.2) 15%, #b45309 50%, rgba(180,83,9,0.2) 85%, transparent)',
           }}
         />
 
         {/* Continuous 4"x9" Flex Column */}
-        <div className="w-full h-full flex flex-col justify-between">
+        <div className="w-full h-full flex flex-col justify-between p-4 sm:p-5">
           {/* =======================================================
               SECTION 1: TOP 3" (33.3% height) - BACK OF STAND
               Inverted (rotate-180) so it reads upright when folded over top curve
               ======================================================= */}
-          <div className="w-full h-[33.33%] flex flex-col items-center justify-center p-4 relative z-10 rotate-180">
+          <div className="w-full h-[33.33%] flex flex-col items-center justify-center relative z-10 rotate-180">
             {/* Visual badge hidden during print */}
-            <span className="no-print absolute top-2 text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
+            <span className="no-print absolute -top-1 text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
               3" × 4" Stand Back (Inverted for curve)
             </span>
 
-            {/* Coffee Emblem */}
-            <div className="w-12 h-12 rounded-full border-2 border-[#b8873f] flex items-center justify-center bg-[#fdf8f0] shadow-sm mb-1">
-              <Coffee size={20} className="text-[#95682b]" />
-            </div>
+            {/* Official Website Logo */}
+            <img
+              src={restaurant.logo_url || '/cafe-choco-craze-logo.png'}
+              alt={restaurant.name}
+              className="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1.5"
+            />
 
             <span className="text-[10px] italic font-serif text-[#b45309] tracking-widest leading-none">
               Cafe
@@ -633,26 +529,27 @@ export default function QRCodeCard() {
               CHOCO CRAZE
             </div>
 
-            <div className="w-2/3 flex items-center justify-center gap-1.5 my-1">
-              <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-[#b8873f]" />
-              <span className="text-[9px] text-[#b8873f]">✦</span>
-              <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-[#b8873f]" />
-            </div>
-
-            <p className="text-[8px] sm:text-[9px] italic font-serif text-[#7c481e]">
+            <p className="text-[8px] sm:text-[9px] italic font-serif text-[#7c481e] mt-1">
               Crafted with Love • Served with Joy
             </p>
           </div>
 
           {/* =======================================================
               SECTION 2: BOTTOM 6" (66.67% height) - FRONT OF STAND (Upright)
-              CAFE NAME + MENU + QR + COFFEE & PIZZA ELEMENTS
+              Website Logo + Welcome + MENU + QR + URL
               ======================================================= */}
-          <div className="w-full h-[66.67%] flex flex-col items-center justify-between py-5 px-4 relative z-10">
+          <div className="w-full h-[66.67%] flex flex-col items-center justify-between pt-4 pb-2 relative z-10">
             {/* Visual badge hidden during print */}
             <span className="no-print text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
               6" × 4" Stand Front (Upright)
             </span>
+
+            {/* Official Website Logo */}
+            <img
+              src={restaurant.logo_url || '/cafe-choco-craze-logo.png'}
+              alt={restaurant.name}
+              className="w-14 h-14 sm:w-16 sm:h-16 object-contain my-0.5"
+            />
 
             {/* Cafe Name on Front Face */}
             <div className="text-center my-0.5">
@@ -660,19 +557,19 @@ export default function QRCodeCard() {
                 Welcome to
               </span>
               <h2
-                className="text-xl sm:text-2xl font-black text-gray-900 leading-tight"
+                className="text-lg sm:text-xl font-black text-gray-900 leading-tight"
                 style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
               >
                 {restaurant.name || 'Cafe Choco Craze'}
               </h2>
-              <span className="text-[9.5px] italic font-serif text-[#92400e] tracking-wide block mt-0.5">
+              <span className="text-[9px] italic font-serif text-[#92400e] tracking-wide block">
                 Delicious Cold Coffee &nbsp;•&nbsp; Irresistibly Sweet
               </span>
             </div>
 
             {/* Hero MENU */}
             <h3
-              className="text-4xl sm:text-5xl font-black tracking-widest text-[#1e130c] leading-none my-1"
+              className="text-3xl sm:text-4xl font-black tracking-widest text-[#1e130c] leading-none my-0.5"
               style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
             >
               MENU
