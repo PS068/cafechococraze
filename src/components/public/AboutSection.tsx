@@ -54,7 +54,7 @@ export default function AboutSection({ onOpenLocation }: AboutSectionProps) {
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left Column: Founder Portrait Card */}
+          {/* Left Column: Cafe Atmosphere & Quality Commitment Card */}
           <div className="lg:col-span-5 flex flex-col items-center">
             <div
               className="w-full max-w-sm rounded-3xl p-4 sm:p-5 border shadow-xl relative group transition-transform duration-300 hover:-translate-y-1"
@@ -66,46 +66,46 @@ export default function AboutSection({ onOpenLocation }: AboutSectionProps) {
               {/* Photo Frame */}
               <div className="relative aspect-square w-full rounded-2xl overflow-hidden shadow-md ring-1 ring-black/10 bg-amber-50">
                 <img
-                  src="/satyajeet-maskin.jpg"
-                  alt="Satyajeet Maskin - Founder of Cafe Choco Craze"
-                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80"
+                  alt="Cafe Choco Craze Sangli Ambience"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                {/* Year Badge */}
+                {/* Franchise Badge */}
                 <div className="absolute top-3 left-3 px-3 py-1.5 rounded-full text-xs font-bold text-white bg-black/60 backdrop-blur-md border border-white/20 flex items-center gap-1.5">
-                  <Calendar size={13} className="text-amber-400" />
-                  <span>Est. 2019</span>
+                  <Coffee size={13} className="text-amber-400" />
+                  <span>Authorized Franchise</span>
                 </div>
               </div>
 
-              {/* Founder Information */}
+              {/* Cafe Information */}
               <div className="pt-5 pb-2 text-center">
                 <span
                   className="text-xs font-bold tracking-widest uppercase mb-1 block"
                   style={{ color: 'var(--accent)' }}
                 >
-                  Founder &amp; Visionary
+                  Authorized Franchise Outlet
                 </span>
                 <h3
                   className="text-2xl font-bold"
                   style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
                 >
-                  Satyajeet Maskin
+                  Cafe Choco Craze Sangli
                 </h3>
                 <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
-                  Founder, Cafe Choco Craze
+                  100ft Road, Nishant Colony, Sangli
                 </p>
 
                 <p
                   className="mt-3.5 text-xs sm:text-sm italic leading-relaxed px-2"
                   style={{ color: 'var(--text-secondary)' }}
                 >
-                  &ldquo;We started with a simple belief: everyone deserves a comforting cup of thick cold coffee and delicious cafe bites crafted with love.&rdquo;
+                  &ldquo;Bringing the beloved Cafe Choco Craze signature thick cold coffees, chocolicks, and cafe bites to food lovers in Sangli.&rdquo;
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Cafe Introduction Story & Address Card */}
+          {/* Right Column: Cafe Story & Address Card */}
           <div className="lg:col-span-7 flex flex-col gap-6">
             <div
               className="rounded-3xl p-6 sm:p-8 border shadow-sm"
@@ -126,38 +126,38 @@ export default function AboutSection({ onOpenLocation }: AboutSectionProps) {
                     className="text-lg sm:text-xl font-bold"
                     style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
                   >
-                    Crafting Delights Since 2019
+                    Serving Sangli With Love
                   </h4>
                   <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                    A homegrown dream in Sangli
+                    Your favorite hangout for cold coffee & quick bites
                   </p>
                 </div>
               </div>
 
               <div className="space-y-4 text-sm sm:text-base leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                 <p>
-                  Started in <strong>2019 by Satyajeet Maskin</strong>, <strong>Cafe Choco Craze</strong> was founded with a singular passion: to deliver rich, indulgent cold coffees, artisanal thick shakes, and freshly prepared cafe favorites that bring genuine joy to food lovers.
+                  As an <strong>authorized franchise outlet</strong> of the popular <strong>Cafe Choco Craze</strong> brand, our Sangli café is committed to bringing you the exact signature taste, quality, and comforting café experience that thousands love across Maharashtra.
                 </p>
                 <p>
-                  From our signature <strong className="font-semibold" style={{ color: 'var(--text-primary)' }}>Crunchy Frolic Cold Coffees</strong> and decadent <strong className="font-semibold" style={{ color: 'var(--text-primary)' }}>Chocolicks</strong> to crispy seasoned fries, grilled sandwiches, and sweet sizzling desserts, every recipe is made fresh to order using premium ingredients.
+                  From our signature <strong className="font-semibold" style={{ color: 'var(--text-primary)' }}>Crunchy Frolic Cold Coffees</strong> and decadent <strong className="font-semibold" style={{ color: 'var(--text-primary)' }}>Chocolicks</strong> to crispy seasoned fries, cheesy pizzas, grilled sandwiches, and sweet sizzling desserts, every item is prepared fresh to order using the brand's authentic recipes and premium ingredients.
                 </p>
               </div>
 
               {/* Highlights pills */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-6 mt-6 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
                 <div className="p-3 rounded-2xl border text-center" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-subtle)' }}>
-                  <span className="block text-xl font-bold" style={{ color: 'var(--accent)' }}>2019</span>
-                  <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Year Founded</span>
+                  <span className="block text-xl font-bold" style={{ color: 'var(--accent)' }}>Original</span>
+                  <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Brand Recipes</span>
                 </div>
                 <div className="p-3 rounded-2xl border text-center" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-subtle)' }}>
                   <span className="block text-xl font-bold" style={{ color: 'var(--accent)' }}>70+</span>
-                  <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Signature Treats</span>
+                  <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Menu Items</span>
                 </div>
                 <div className="p-3 rounded-2xl border text-center col-span-2 sm:col-span-1" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-subtle)' }}>
                   <span className="block text-xl font-bold flex items-center justify-center gap-1" style={{ color: 'var(--accent)' }}>
                     <Heart size={16} fill="currentColor" /> 100%
                   </span>
-                  <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Fresh &amp; Crafted</span>
+                  <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Pure Veg &amp; Fresh</span>
                 </div>
               </div>
             </div>

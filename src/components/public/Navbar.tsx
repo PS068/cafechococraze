@@ -12,7 +12,6 @@ export default function Navbar() {
 
   const navLinks = [
     { label: 'Menu', href: '#menu' },
-    { label: 'Franchises', href: '#franchises' },
     { label: 'About', href: '#about' },
     { label: 'Contact', href: '#contact' },
   ];

@@ -7,7 +7,6 @@ import FeaturedItems from '../components/public/FeaturedItems';
 import MenuGrid from '../components/public/MenuGrid';
 import Footer from '../components/public/Footer';
 import AboutSection from '../components/public/AboutSection';
-import FranchisesSection from '../components/public/FranchisesSection';
 import LocationModal from '../components/public/LocationModal';
 import DishDetailModal from '../components/public/DishDetailModal';
 import WeeklyScheduleModal from '../components/public/WeeklyScheduleModal';
@@ -341,10 +340,7 @@ export default function PublicMenuPage() {
         </div>
       </main>
 
-      {/* Multi-City Franchises & Outlets Section */}
-      <FranchisesSection onOpenSangliDirections={() => setIsLocationModalOpen(true)} />
-
-      {/* About Cafe & Founder Section */}
+      {/* About Cafe Section */}
       <AboutSection onOpenLocation={() => setIsLocationModalOpen(true)} />
 
       {/* Dish Detailed View Modal */}
