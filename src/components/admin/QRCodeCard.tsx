@@ -28,7 +28,7 @@ export default function QRCodeCard() {
   const topQrCanvasRef = useRef<HTMLDivElement>(null);
   const bottomQrCanvasRef = useRef<HTMLDivElement>(null);
 
-  const PRODUCTION_DOMAIN = 'https://chococraze.xyz';
+  const PRODUCTION_DOMAIN = 'https://www.cafechococraze.xyz';
   const savedDomain = (restaurant.theme_preferences?.custom_domain as string) || PRODUCTION_DOMAIN;
   const [customDomain, setCustomDomain] = useState(savedDomain);
   const [isEditingDomain, setIsEditingDomain] = useState(false);
@@ -39,7 +39,7 @@ export default function QRCodeCard() {
     }
   }, [restaurant.theme_preferences]);
 
-  // Use configured domain if provided, default to production domain https://chococraze.xyz
+  // Use configured domain if provided, default to production domain https://www.cafechococraze.xyz
   const activeOrigin = customDomain.trim() ? customDomain.trim().replace(/\/$/, '') : PRODUCTION_DOMAIN;
   const publicUrl = activeOrigin;
 
@@ -533,7 +533,7 @@ export default function QRCodeCard() {
                       type="url"
                       value={customDomain}
                       onChange={(e) => setCustomDomain(e.target.value)}
-                      placeholder="https://chococraze.xyz"
+                      placeholder="https://www.cafechococraze.xyz"
                       className="flex-1 px-3 py-2 text-xs rounded-xl border outline-none font-mono"
                       style={{
                         backgroundColor: 'var(--bg-input)',
