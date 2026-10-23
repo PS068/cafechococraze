@@ -273,82 +273,11 @@ export default function QRCodeCard() {
       ctx.lineTo(320, -565);
       ctx.stroke();
 
-      // Eye-Pleasing Element 1: Steaming Coffee Cup Icon (Left of MENU)
-      const cupX = -270;
-      const cupY = -460;
-      ctx.save();
-      ctx.translate(cupX, cupY);
-      // Cup body
-      ctx.fillStyle = '#95682b';
-      ctx.beginPath();
-      ctx.moveTo(-22, -8);
-      ctx.bezierCurveTo(-22, 22, 22, 22, 22, -8);
-      ctx.closePath();
-      ctx.fill();
-      ctx.strokeStyle = '#b8873f';
-      ctx.lineWidth = 2.5;
-      ctx.stroke();
-      // Saucer
-      ctx.beginPath();
-      ctx.ellipse(0, 26, 28, 5, 0, 0, Math.PI * 2);
-      ctx.fillStyle = '#7c481e';
-      ctx.fill();
-      ctx.stroke();
-      // Handle
-      ctx.beginPath();
-      ctx.arc(24, 6, 8, -Math.PI / 2, Math.PI / 2);
-      ctx.strokeStyle = '#b8873f';
-      ctx.lineWidth = 3;
-      ctx.stroke();
-      // Steam
-      ctx.strokeStyle = '#d4a243';
-      ctx.lineWidth = 2;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(-8, -14);
-      ctx.bezierCurveTo(-12, -24, -4, -30, -8, -40);
-      ctx.moveTo(8, -14);
-      ctx.bezierCurveTo(4, -24, 12, -30, 8, -40);
-      ctx.stroke();
-      ctx.restore();
-
       // Word MENU - High attention hero
       ctx.fillStyle = '#1e130c';
-      ctx.font = '900 135px "Playfair Display", Georgia, serif';
-      ctx.letterSpacing = '8px';
+      ctx.font = '900 150px "Playfair Display", Georgia, serif';
+      ctx.letterSpacing = '10px';
       ctx.fillText('MENU', 0, -440);
-
-      // Eye-Pleasing Element 2: Pizza Slice Icon (Right of MENU)
-      const pizzaX = 270;
-      const pizzaY = -465;
-      ctx.save();
-      ctx.translate(pizzaX, pizzaY);
-      // Crust
-      ctx.strokeStyle = '#b45309';
-      ctx.lineWidth = 6;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.arc(0, 0, 36, -Math.PI * 0.72, -Math.PI * 0.28);
-      ctx.stroke();
-      // Slice body
-      ctx.fillStyle = '#f59e0b';
-      ctx.beginPath();
-      ctx.moveTo(0, 26);
-      ctx.lineTo(-24, -22);
-      ctx.quadraticCurveTo(0, -30, 24, -22);
-      ctx.closePath();
-      ctx.fill();
-      ctx.strokeStyle = '#d97706';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      // Pepperoni / toppings
-      ctx.fillStyle = '#dc2626';
-      ctx.beginPath();
-      ctx.arc(-6, -10, 4, 0, Math.PI * 2);
-      ctx.arc(8, -8, 4.5, 0, Math.PI * 2);
-      ctx.arc(0, 8, 3.5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
 
       // Laser scan beam line (Clean horizontal lines, no WiFi icon)
       ctx.strokeStyle = '#b8873f';
@@ -388,11 +317,11 @@ export default function QRCodeCard() {
       ctx.font = 'italic 34px "Playfair Display", Georgia, serif';
       ctx.fillText('Point your camera to view items', 0, 395);
 
-      // Eye-Pleasing Element 3: Accent Highlights at footer (Coffee ☕ • Pizza 🍕 • Pure Veg 🟢)
+      // Tagline at footer
       ctx.fillStyle = '#92400e';
       ctx.font = 'bold 28px "Inter", sans-serif';
       ctx.letterSpacing = '2px';
-      ctx.fillText('☕ Beverages & Shakes   •   🍕 Cafe Bites   •   🟢 100% Veg', 0, 480);
+      ctx.fillText('Thick Cold Coffees   •   Shakes   •   100% Pure Veg', 0, 480);
 
       // Footer brand name
       ctx.fillStyle = '#9ca3af';
@@ -741,25 +670,13 @@ export default function QRCodeCard() {
               </span>
             </div>
 
-            {/* Hero MENU with Coffee & Pizza eye-pleasing elements */}
-            <div className="flex items-center justify-center gap-3 my-0.5 w-full">
-              {/* Coffee Icon */}
-              <div className="w-7 h-7 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-800 shrink-0 shadow-sm">
-                <Coffee size={15} />
-              </div>
-
-              <h3
-                className="text-3xl sm:text-4xl font-black tracking-widest text-[#1e130c] leading-none"
-                style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
-              >
-                MENU
-              </h3>
-
-              {/* Pizza Icon */}
-              <div className="w-7 h-7 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-orange-600 shrink-0 shadow-sm text-xs">
-                🍕
-              </div>
-            </div>
+            {/* Hero MENU */}
+            <h3
+              className="text-4xl sm:text-5xl font-black tracking-widest text-[#1e130c] leading-none my-1"
+              style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+            >
+              MENU
+            </h3>
 
             {/* Laser scan line bar (No WiFi) */}
             <div className="w-3/5 flex flex-col items-center my-0.5">
@@ -797,11 +714,9 @@ export default function QRCodeCard() {
 
             {/* Bottom food tags */}
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-amber-50 rounded-full border border-amber-200 text-[8.5px] font-semibold text-amber-800">
-              <span>☕ Cold Coffee</span>
+              <span>☕ Thick Cold Coffees</span>
               <span>•</span>
-              <span>🍕 Pizza & Bites</span>
-              <span>•</span>
-              <span className="text-emerald-700 font-bold">🟢 Pure Veg</span>
+              <span className="text-emerald-700 font-bold">🟢 100% Pure Veg</span>
             </div>
           </div>
         </div>
