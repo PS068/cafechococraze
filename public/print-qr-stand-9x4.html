@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cafe Choco Craze — 9x4 Stand Sticker Print</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,500;1,700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    @page {
+      size: 9in 4in landscape;
+      margin: 0;
+    }
+
+    body {
+      background: #080809;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #fdf9ef;
+    }
+
+    /* Print instruction banner on screen */
+    .screen-notice {
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #e6b340;
+      text-align: center;
+      background: rgba(230, 179, 64, 0.1);
+      border: 1px solid rgba(230, 179, 64, 0.3);
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+    @media print {
+      .screen-notice { display: none !important; }
+      body {
+        padding: 0;
+        min-height: auto;
+        background: transparent;
+      }
+    }
+
+    /* ══════════════════════════════════════════════════
+       9x4 INCHES FULL STAND STICKER CANVAS
+    ══════════════════════════════════════════════════ */
+    .print-canvas {
+      width: 9in;
+      height: 4in;
+      position: relative;
+      background: radial-gradient(circle at 35% 50%, #201e1b 0%, #161719 55%, #0e0f11 100%);
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(230, 179, 64, 0.15);
+    }
+
+    /* ══════════════════════════════════════════════════
+       UNIFIED GOLDEN BORDER FOR THE ENTIRE 9x4
+    ══════════════════════════════════════════════════ */
+    .outer-golden-frame {
+      position: absolute;
+      inset: 6px;
+      border: 1.5px solid #f4dfa8;
+      border-radius: 12px;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    .rope-pattern-frame {
+      position: absolute;
+      inset: 10px;
+      border-radius: 9px;
+      border: 6px solid transparent;
+      background: repeating-linear-gradient(
+        45deg,
+        #b8873f 0px,
+        #f4dfa8 3px,
+        #e6b340 6px,
+        #975a1c 9px,
+        #b8873f 12px
+      ) border-box;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 21;
+    }
+
+    .inner-golden-frame {
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(230, 179, 64, 0.55);
+      border-radius: 6px;
+      pointer-events: none;
+      z-index: 22;
+    }
+
+    /* Elegant Corner Accents */
+    .fleur-corner {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      z-index: 25;
+      color: #f4dfa8;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 0 0 8px rgba(230, 179, 64, 0.8);
+      user-select: none;
+    }
+    .fleur-corner.tl { top: 2px; left: 3px; }
+    .fleur-corner.tr { top: 2px; right: 3px; }
+    .fleur-corner.bl { bottom: 2px; left: 3px; }
+    .fleur-corner.br { bottom: 2px; right: 3px; }
+
+    /* Vertical Fold/Cut Separator between Front (QR) and Back (Logo) */
+    .divider-groove {
+      position: absolute;
+      left: 5.5in;
+      top: 18px;
+      bottom: 18px;
+      width: 2px;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(230, 179, 64, 0.2) 8%,
+        #e6b340 50%,
+        rgba(230, 179, 64, 0.2) 92%,
+        transparent 100%
+      );
+      box-shadow: 0 0 8px rgba(230, 179, 64, 0.4);
+      z-index: 15;
+    }
+
+    /* ══════════════════════════════════════════════════
+       SIDE 1: FRONT FACE (QR & MENU) ~5.5in x 4in
+    ══════════════════════════════════════════════════ */
+    .face-qr {
+      width: 5.5in;
+      height: 4in;
+      padding: 24px 28px 20px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 5;
+    }
+
+    .top-subhead {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 13.5px;
+      color: #f4dfa8;
+      letter-spacing: 0.05em;
+      text-align: center;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+
+    .menu-headline {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 900;
+      font-size: 68px;
+      line-height: 0.95;
+      text-align: center;
+      letter-spacing: 0.08em;
+      background: linear-gradient(180deg, #ffffff 0%, #fef3c7 20%, #f4dfa8 40%, #e6b340 70%, #95682b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 3px 12px rgba(230, 179, 64, 0.5));
+    }
+
+    /* Sleek Laser Scan Beam Line */
+    .laser-scan-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      width: 75%;
+    }
+    .laser-scan-bar .beam {
+      width: 100%;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent 0%, #f4dfa8 20%, #e6b340 50%, #f4dfa8 80%, transparent 100%);
+      box-shadow: 0 0 6px rgba(230, 179, 64, 0.7);
+    }
+
+    /* Single Clean Standalone QR Card (No double QR behind) */
+    .clean-qr-holder {
+      background: #ffffff;
+      border: 2px solid #e6b340;
+      border-radius: 8px;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 15px rgba(230, 179, 64, 0.3);
+    }
+    .clean-qr-holder svg {
+      display: block;
+      width: 96px;
+      height: 96px;
+    }
+
+    .url-badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #e6b340;
+      letter-spacing: 0.08em;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+
+    .cta-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .cta-scan {
+      font-family: 'Inter', sans-serif;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      color: #fdf9ef;
+      text-transform: uppercase;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    .cta-subtext {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 11px;
+      color: #f4dfa8;
+      letter-spacing: 0.03em;
+      opacity: 0.95;
+    }
+
+    /* ══════════════════════════════════════════════════
+       SIDE 2: BACK FACE (CAFE LOGO & NAME) ~3.5in x 4in
+    ══════════════════════════════════════════════════ */
+    .face-logo {
+      width: 3.5in;
+      height: 4in;
+      padding: 24px 22px 20px 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Circular Cafe Emblem (Cup + Chocolate Swirls) */
+    .cafe-emblem-wrap {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 2px solid #e6b340;
+      box-shadow: 0 0 16px rgba(230, 179, 64, 0.35), inset 0 0 12px rgba(0, 0, 0, 0.8);
+      background: radial-gradient(circle, #251a0e 0%, #121315 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .cafe-emblem-wrap svg {
+      width: 62px;
+      height: 62px;
+    }
+
+    .cafe-prefix {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 14px;
+      color: #f4dfa8;
+      letter-spacing: 0.1em;
+      margin-bottom: -4px;
+    }
+
+    .brand-title-main {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 900;
+      font-size: 40px;
+      line-height: 0.95;
+      letter-spacing: 0.05em;
+      background: linear-gradient(180deg, #ffffff 0%, #fef3c7 25%, #f4dfa8 45%, #e6b340 75%, #975a1c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 8px rgba(230, 179, 64, 0.4));
+    }
+
+    .brand-flourish {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 80%;
+      margin: 8px 0 6px 0;
+    }
+    .brand-flourish .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(230, 179, 64, 0.7));
+    }
+    .brand-flourish .line.rev {
+      background: linear-gradient(to left, transparent, rgba(230, 179, 64, 0.7));
+    }
+    .brand-flourish .star {
+      font-size: 13px;
+      color: #e6b340;
+    }
+
+    .brand-tagline-back {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 10px;
+      color: #f4dfa8;
+      letter-spacing: 0.04em;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="screen-notice">
+    ✨ <strong>Cafe Choco Craze — 9x4 Stand Sticker Print</strong> | To print: Press <strong>Ctrl + P</strong> (or Cmd + P) &rarr; Set Destination to <em>Save as PDF</em> or your photo/sticker printer &rarr; Layout: <em>Landscape</em> &rarr; Margins: <em>None</em> &rarr; Scale: <em>100%</em>.
+  </div>
+
+  <div class="print-canvas">
+
+    <!-- ═════ UNIFIED GOLDEN BORDER AROUND FULL 9x4 ═════ -->
+    <div class="outer-golden-frame"></div>
+    <div class="rope-pattern-frame"></div>
+    <div class="inner-golden-frame"></div>
+
+    <div class="fleur-corner tl">✦</div>
+    <div class="fleur-corner tr">✦</div>
+    <div class="fleur-corner bl">✦</div>
+    <div class="fleur-corner br">✦</div>
+
+    <!-- Divider fold line between faces -->
+    <div class="divider-groove"></div>
+
+    <!-- ═════ SIDE 1: FRONT FACE (QR CODE & MENU) ═════ -->
+    <div class="face-qr">
+      <div class="top-subhead">Delicious Cold Coffee &nbsp;•&nbsp; Irresistibly Sweet</div>
+
+      <div class="menu-headline">MENU</div>
+
+      <div class="laser-scan-bar">
+        <div class="beam"></div>
+        <div class="beam" style="width: 85%; opacity: 0.6;"></div>
+      </div>
+
+      <!-- Clean Single QR Code Container (No double QR behind) -->
+      <div class="clean-qr-holder">
+        <svg viewBox="0 0 33 33" fill="#111" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background -->
+          <rect width="33" height="33" fill="#ffffff" />
+          
+          <!-- Top Left Finder Pattern -->
+          <rect x="2" y="2" width="7" height="7" fill="#111" />
+          <rect x="3" y="3" width="5" height="5" fill="#ffffff" />
+          <rect x="4" y="4" width="3" height="3" fill="#111" />
+
+          <!-- Top Right Finder Pattern -->
+          <rect x="24" y="2" width="7" height="7" fill="#111" />
+          <rect x="25" y="3" width="5" height="5" fill="#ffffff" />
+          <rect x="26" y="4" width="3" height="3" fill="#111" />
+
+          <!-- Bottom Left Finder Pattern -->
+          <rect x="2" y="24" width="7" height="7" fill="#111" />
+          <rect x="3" y="25" width="5" height="5" fill="#ffffff" />
+          <rect x="4" y="26" width="3" height="3" fill="#111" />
+
+          <!-- High Density QR Modules Matrix -->
+          <rect x="11" y="2" width="2" height="1"/><rect x="15" y="2" width="1" height="2"/><rect x="18" y="2" width="2" height="1"/><rect x="21" y="2" width="1" height="1"/>
+          <rect x="10" y="4" width="1" height="2"/><rect x="13" y="4" width="2" height="1"/><rect x="17" y="4" width="1" height="2"/><rect x="20" y="4" width="2" height="1"/>
+          <rect x="11" y="7" width="2" height="1"/><rect x="14" y="6" width="1" height="2"/><rect x="17" y="7" width="2" height="1"/><rect x="21" y="7" width="1" height="1"/>
+          
+          <rect x="2" y="11" width="2" height="1"/><rect x="5" y="11" width="1" height="2"/><rect x="8" y="11" width="2" height="1"/><rect x="12" y="10" width="1" height="2"/><rect x="15" y="11" width="2" height="1"/><rect x="19" y="11" width="1" height="2"/><rect x="22" y="11" width="2" height="1"/><rect x="26" y="11" width="1" height="2"/><rect x="29" y="11" width="2" height="1"/>
+          <rect x="3" y="14" width="2" height="1"/><rect x="7" y="13" width="1" height="2"/><rect x="10" y="14" width="2" height="1"/><rect x="14" y="14" width="1" height="2"/><rect x="17" y="14" width="2" height="1"/><rect x="21" y="13" width="1" height="2"/><rect x="24" y="14" width="2" height="1"/><rect x="28" y="14" width="1" height="2"/>
+          <rect x="1" y="17" width="2" height="1"/><rect x="5" y="16" width="1" height="2"/><rect x="8" y="17" width="2" height="1"/><rect x="12" y="17" width="1" height="2"/><rect x="16" y="17" width="2" height="1"/><rect x="19" y="16" width="1" height="2"/><rect x="23" y="17" width="2" height="1"/><rect x="27" y="17" width="1" height="2"/><rect x="30" y="17" width="2" height="1"/>
+          <rect x="3" y="20" width="2" height="1"/><rect x="7" y="20" width="1" height="2"/><rect x="10" y="20" width="2" height="1"/><rect x="14" y="19" width="1" height="2"/><rect x="17" y="20" width="2" height="1"/><rect x="21" y="20" width="1" height="2"/><rect x="25" y="20" width="2" height="1"/><rect x="29" y="20" width="1" height="2"/>
+
+          <rect x="11" y="24" width="2" height="1"/><rect x="15" y="23" width="1" height="2"/><rect x="18" y="24" width="2" height="1"/><rect x="22" y="24" width="1" height="2"/><rect x="25" y="24" width="2" height="1"/><rect x="29" y="24" width="1" height="2"/>
+          <rect x="10" y="27" width="1" height="2"/><rect x="13" y="27" width="2" height="1"/><rect x="17" y="26" width="1" height="2"/><rect x="20" y="27" width="2" height="1"/><rect x="24" y="27" width="1" height="2"/><rect x="27" y="27" width="2" height="1"/><rect x="30" y="27" width="1" height="2"/>
+          <rect x="11" y="30" width="2" height="1"/><rect x="14" y="29" width="1" height="2"/><rect x="18" y="30" width="2" height="1"/><rect x="22" y="30" width="1" height="2"/><rect x="26" y="30" width="2" height="1"/>
+        </svg>
+      </div>
+
+      <div class="url-badge">cafechococraze.omnirush.ai</div>
+
+      <div class="cta-container">
+        <div class="cta-scan">SCAN FOR MENU</div>
+        <div class="cta-subtext">Point your camera to view items</div>
+      </div>
+    </div>
+
+    <!-- ═════ SIDE 2: BACK FACE (CAFE NAME & LOGO ONLY) ═════ -->
+    <div class="face-logo">
+      <div class="cafe-emblem-wrap">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer circular gold ring -->
+          <circle cx="32" cy="32" r="30" stroke="#f4dfa8" stroke-width="1.5" stroke-dasharray="3 2" />
+          <circle cx="32" cy="32" r="27" stroke="#e6b340" stroke-width="1" />
+          
+          <!-- Coffee Cup Body -->
+          <path d="M19 28 C19 43, 45 43, 45 28 Z" fill="url(#cupGrad)" stroke="#e6b340" stroke-width="1"/>
+          
+          <!-- Cup Rim -->
+          <ellipse cx="32" cy="27" rx="13" ry="3.5" fill="#95682b" stroke="#f4dfa8" stroke-width="0.8"/>
+          
+          <!-- Cup Handle -->
+          <path d="M44 30 C51 30, 51 38, 43 39" stroke="#e6b340" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          
+          <!-- Saucer -->
+          <ellipse cx="32" cy="44" rx="15" ry="3" fill="#683c1e" stroke="#e6b340" stroke-width="0.8"/>
+          
+          <!-- Aromatic Steam Swirls -->
+          <path d="M26 21 C24 16, 27 12, 25 8" stroke="#f4dfa8" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          <path d="M32 20 C30 15, 34 11, 32 6" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+          <path d="M38 21 C36 16, 39 12, 37 8" stroke="#f4dfa8" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          
+          <!-- Decorative Stars & Chocolate Accents -->
+          <text x="9" y="24" fill="#e6b340" font-size="6" font-family="serif">★</text>
+          <text x="49" y="24" fill="#e6b340" font-size="6" font-family="serif">★</text>
+          <circle cx="14" cy="37" r="1.5" fill="#f4dfa8" />
+          <circle cx="50" cy="37" r="1.5" fill="#f4dfa8" />
+
+          <!-- Gradients -->
+          <defs>
+            <linearGradient id="cupGrad" x1="19" y1="28" x2="45" y2="43" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#7c481e"/>
+              <stop offset="0.5" stop-color="#95682b"/>
+              <stop offset="1" stop-color="#552c0f"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <div class="cafe-prefix">Cafe</div>
+      <div class="brand-title-main">CHOCO</div>
+      <div class="brand-title-main" style="margin-top: -3px;">CRAZE</div>
+
+      <div class="brand-flourish">
+        <div class="line"></div>
+        <div class="star">✦</div>
+        <div class="line rev"></div>
+      </div>
+
+      <div class="brand-tagline-back">Crafted with Love &nbsp;•&nbsp; Served with Joy</div>
+    </div>
+
+  </div>
+
+</body>
+</html>

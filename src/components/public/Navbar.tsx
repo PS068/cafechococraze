@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Coffee } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, Coffee, Building2 } from 'lucide-react';
 import ThemeToggle from '../common/ThemeToggle';
 import { useData } from '../../context/DataContext';
 
@@ -8,16 +8,37 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { restaurant } = useData();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const navLinks = [
     { label: 'Menu', href: '#menu' },
+    { label: 'Franchises', href: '#franchises' },
     { label: 'About', href: '#about' },
     { label: 'Contact', href: '#contact' },
   ];
 
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsOpen(false);
+
+    // Smoothly scroll to the very top (first view of the page)
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Notify listeners (like PublicMenuPage) to reset search query and active category
+    window.dispatchEvent(new CustomEvent('nav-to-first-page'));
+
+    // Client-side navigate to root without reloading the page
+    if (location.pathname !== '/' && location.pathname !== '/sangli' && location.pathname !== `/menu/${restaurant.slug}`) {
+      navigate('/');
+    } else if (location.hash || location.search) {
+      navigate(location.pathname, { replace: true });
+    }
+  };
+
   const scrollToSection = (href: string) => {
     setIsOpen(false);
-    if (location.pathname !== '/' && location.pathname !== `/menu/${restaurant.slug}`) {
+    if (location.pathname !== '/' && location.pathname !== '/sangli' && location.pathname !== `/menu/${restaurant.slug}`) {
+      navigate(`/${href}`);
       return;
     }
     const el = document.querySelector(href);
@@ -34,20 +55,12 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-[4.75rem]">
-          {/* Logo & Brand Name - reloads to fresh home page */}
+          {/* Logo & Brand Name - Smoothly returns to first page without refresh */}
           <a
             href="/"
-            onClick={(e) => {
-              e.preventDefault();
-              if (window.location.pathname === '/' && !window.location.search && !window.location.hash) {
-                window.scrollTo({ top: 0, behavior: 'instant' });
-                window.location.reload();
-              } else {
-                window.location.href = '/';
-              }
-            }}
+            onClick={handleLogoClick}
             className="flex items-center gap-2.5 sm:gap-3.5 group cursor-pointer"
-            aria-label={`${restaurant.name} home`}
+            aria-label={`${restaurant.name} home - go to first page`}
           >
             {restaurant.logo_url ? (
               <img

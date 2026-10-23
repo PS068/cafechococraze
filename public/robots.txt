@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /sangli
+Allow: /cafe-choco-craze-sangli
+Disallow: /admin/
+Disallow: /admin
+
+Sitemap: https://chococraze.xyz/sitemap.xml

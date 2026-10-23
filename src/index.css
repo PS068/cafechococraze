@@ -322,10 +322,10 @@ input:focus, select:focus, textarea:focus {
   outline-offset: 1px;
 }
 
-/* Print styles for QR code 10x6 standee */
+/* Print styles for QR code 4x9 stand sticker */
 @media print {
   @page {
-    size: 6in 10in;
+    size: 4in 9in portrait;
     margin: 0;
   }
   html, body {
@@ -343,9 +343,9 @@ input:focus, select:focus, textarea:focus {
     display: block !important;
   }
   .print-standee-card {
-    width: 6in !important;
-    height: 10in !important;
-    max-width: 6in !important;
+    width: 4in !important;
+    height: 9in !important;
+    max-width: 4in !important;
     margin: 0 auto !important;
     padding: 0 !important;
     box-shadow: none !important;

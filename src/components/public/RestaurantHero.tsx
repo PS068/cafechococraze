@@ -51,19 +51,19 @@ export default function RestaurantHero({ onOpenLocation, onOpenSchedule }: Resta
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <Sparkles size={14} className="text-amber-300 sm:w-4 sm:h-4 shrink-0" />
                 <span className="text-amber-200 text-[10px] sm:text-sm font-semibold tracking-[0.2em] sm:tracking-[0.24em] uppercase">
-                  Digital Menu · Cafe Choco Craze
+                  Digital Menu · Sangli Branch
                 </span>
               </div>
-              <p className="text-white/75 text-[11px] sm:text-sm mt-0.5 font-medium hidden sm:block">Signature Shakes, Frolic Coffees &amp; Cafe Bites</p>
+              <p className="text-white/75 text-[11px] sm:text-sm mt-0.5 font-medium hidden sm:block">100ft Road, Nishant Colony · Famous Cold Coffee &amp; Shakes</p>
             </div>
           </div>
 
-          {/* Restaurant name */}
+          {/* Restaurant heading - Cafe Choco Craze Sangli */}
           <h1
             className="text-2xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-1.5 sm:mb-4 leading-tight sm:leading-[1.04] tracking-tight animate-fade-in-up"
             style={{ fontFamily: 'var(--font-display)', animationDelay: '0.1s' }}
           >
-            {restaurant.name}
+            {restaurant.name.toLowerCase().includes('sangli') ? restaurant.name : `${restaurant.name} Sangli`}
           </h1>
 
           {/* Tagline */}

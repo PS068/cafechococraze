@@ -150,13 +150,14 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [menuItems, setMenuItems] = useState<MenuItem[]>(() =>
     getPersistedMenuItems(CAFE_CHOCO_CRAZE_MENU_ITEMS)
   );
-  const [isLoading, setIsLoading] = useState(true);
+  // Instant render: already preloaded with offline/cached menu data
+  const [isLoading, setIsLoading] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   // Track the reliable restaurant id for queries and foreign keys
   const restaurantIdRef = useRef<string>('');
 
-  // ── Load data from Supabase on mount ──
+  // ── Load data from Supabase on mount (background sync) ──
   useEffect(() => {
     loadData();
   }, []);
@@ -210,6 +211,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
       { event: '*', schema: 'public', table: 'restaurants' },
       (payload: any) => {
         if (payload.eventType === 'UPDATE' && payload.new) {
+          const resolvedName =
+            payload.new.name && !payload.new.name.toLowerCase().includes('sangli')
+              ? `${payload.new.name} Sangli`
+              : (payload.new.name || CAFE_CHOCO_CRAZE_RESTAURANT.name);
           const resolvedLogo =
             !payload.new.logo_url || payload.new.logo_url.includes('photo-1554118811-1e0d58224f24')
               ? CAFE_CHOCO_CRAZE_RESTAURANT.logo_url
@@ -229,6 +234,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
           setRestaurant((prev) => ({
             ...prev,
             ...payload.new,
+            name: resolvedName,
             logo_url: resolvedLogo,
             address: resolvedAddress,
             phone: resolvedPhone,
@@ -316,25 +322,34 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   async function loadData() {
     if (!isSupabaseConfigured || !supabase) {
-      setRestaurant(CAFE_CHOCO_CRAZE_RESTAURANT);
-      setCategories(CAFE_CHOCO_CRAZE_CATEGORIES);
-      setMenuItems(CAFE_CHOCO_CRAZE_MENU_ITEMS);
-      setIsLoading(false);
       return;
     }
 
     try {
-      // Load restaurant
-      const { data: restData, error: restErr } = await supabase
-        .from('restaurants')
-        .select('*')
-        .limit(1)
-        .maybeSingle();
+      // Fetch restaurant, categories, and menu items concurrently in parallel
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Supabase fetch timeout')), 3500)
+      );
 
-      if (restErr || !restData) {
-        console.warn('No restaurant found in Supabase, using defaults', restErr);
-        setRestaurant(getPersistedRestaurant(CAFE_CHOCO_CRAZE_RESTAURANT));
-      } else {
+      const fetchPromise = Promise.all([
+        supabase.from('restaurants').select('*').limit(1).maybeSingle(),
+        supabase.from('categories').select('*').order('display_order'),
+        supabase.from('menu_items').select('*').order('display_order'),
+      ]);
+
+      const [restRes, catRes, itemRes] = (await Promise.race([fetchPromise, timeoutPromise])) as [
+        any,
+        any,
+        any,
+      ];
+
+      // 1. Process restaurant
+      if (restRes?.data) {
+        const restData = restRes.data;
+        const resolvedName =
+          restData.name && !restData.name.toLowerCase().includes('sangli')
+            ? `${restData.name} Sangli`
+            : restData.name || CAFE_CHOCO_CRAZE_RESTAURANT.name;
         const resolvedLogo =
           !restData.logo_url || restData.logo_url.includes('photo-1554118811-1e0d58224f24')
             ? CAFE_CHOCO_CRAZE_RESTAURANT.logo_url
@@ -354,6 +369,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
         const dbRestaurant: Restaurant = {
           ...restData,
+          name: resolvedName,
           logo_url: resolvedLogo,
           address: resolvedAddress,
           phone: resolvedPhone,
@@ -364,50 +380,24 @@ export function DataProvider({ children }: { children: ReactNode }) {
         restaurantIdRef.current = restData.id;
       }
 
-      // Load categories
-      const { data: catData, error: catErr } = await supabase
-        .from('categories')
-        .select('*')
-        .order('display_order');
-
-      if (catErr) {
-        console.error('Error loading categories:', catErr);
+      // 2. Process categories
+      if (catRes?.data && catRes.data.length > 0) {
+        setCategories(catRes.data);
       }
 
-      if (catData && catData.length > 0) {
-        setCategories(catData);
-      } else {
-        setCategories(getPersistedCategories(CAFE_CHOCO_CRAZE_CATEGORIES));
-      }
-
-      // Load menu items
-      const { data: itemData, error: itemErr } = await supabase
-        .from('menu_items')
-        .select('*')
-        .order('display_order');
-
-      if (itemErr) {
-        console.error('Error loading menu items:', itemErr);
-      }
-
-      if (itemData && itemData.length > 0) {
-        const cleaned = itemData.map((item) => ({
+      // 3. Process menu items
+      if (itemRes?.data && itemRes.data.length > 0) {
+        const cleaned = itemRes.data.map((item: any) => ({
           ...item,
           labels: sanitizeCulinaryLabels(item.labels),
         }));
         const merged = mergeWithLocalMenuItemOverrides(cleaned);
         setMenuItems(merged);
-      } else {
-        setMenuItems(getPersistedMenuItems(CAFE_CHOCO_CRAZE_MENU_ITEMS));
       }
     } catch (err) {
-      console.error('Error loading data from Supabase:', err);
-      setRestaurant(getPersistedRestaurant(CAFE_CHOCO_CRAZE_RESTAURANT));
-      setCategories(getPersistedCategories(CAFE_CHOCO_CRAZE_CATEGORIES));
-      setMenuItems(getPersistedMenuItems(CAFE_CHOCO_CRAZE_MENU_ITEMS));
+      // Non-blocking: defaults and cached data already rendered
+      console.warn('Background sync note:', err);
     }
-
-    setIsLoading(false);
   }
 
   // ── Toast management ──

@@ -18,6 +18,8 @@ export default function App() {
       <Routes>
         {/* Public digital menu routes */}
         <Route path="/" element={<PublicMenuPage />} />
+        <Route path="/sangli" element={<PublicMenuPage />} />
+        <Route path="/cafe-choco-craze-sangli" element={<PublicMenuPage />} />
         <Route path="/menu/:slug" element={<PublicMenuPage />} />
 
         {/* Admin Authentication */}

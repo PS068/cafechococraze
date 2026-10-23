@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/public/Navbar';
 import RestaurantHero from '../components/public/RestaurantHero';
 import MenuSearch from '../components/public/MenuSearch';
@@ -7,6 +7,7 @@ import FeaturedItems from '../components/public/FeaturedItems';
 import MenuGrid from '../components/public/MenuGrid';
 import Footer from '../components/public/Footer';
 import AboutSection from '../components/public/AboutSection';
+import FranchisesSection from '../components/public/FranchisesSection';
 import LocationModal from '../components/public/LocationModal';
 import DishDetailModal from '../components/public/DishDetailModal';
 import WeeklyScheduleModal from '../components/public/WeeklyScheduleModal';
@@ -22,6 +23,22 @@ export default function PublicMenuPage() {
   const [selectedDish, setSelectedDish] = useState<MenuItem | null>(null);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
+
+  // Listen for logo click to reset to clean 1st page without full browser reload
+  useEffect(() => {
+    const handleFirstPage = () => {
+      setSearchQuery('');
+      setActiveCategory(null);
+      setDietaryFilter('all');
+      setSelectedDish(null);
+      setIsLocationModalOpen(false);
+      setIsScheduleModalOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.addEventListener('nav-to-first-page', handleFirstPage);
+    return () => window.removeEventListener('nav-to-first-page', handleFirstPage);
+  }, []);
 
   const isStoreOpen = (restaurant.theme_preferences as any)?.isOpen !== false;
   const pauseNotice = (restaurant.theme_preferences as any)?.pauseNotice as string | undefined;
@@ -323,6 +340,9 @@ export default function PublicMenuPage() {
           />
         </div>
       </main>
+
+      {/* Multi-City Franchises & Outlets Section */}
+      <FranchisesSection onOpenSangliDirections={() => setIsLocationModalOpen(true)} />
 
       {/* About Cafe & Founder Section */}
       <AboutSection onOpenLocation={() => setIsLocationModalOpen(true)} />

@@ -22,9 +22,16 @@ export default function Footer({ onOpenLocation, onOpenSchedule }: FooterProps) 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2.5 mb-4">
+            <button
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.dispatchEvent(new CustomEvent('nav-to-first-page'));
+              }}
+              className="flex items-center gap-2.5 mb-4 group cursor-pointer text-left"
+              aria-label={`${restaurant.name} - back to first page`}
+            >
               {restaurant.logo_url ? (
-                <img src={restaurant.logo_url} alt={restaurant.name} className="h-10 w-10 rounded-xl object-cover ring-1 ring-black/10 bg-white" />
+                <img src={restaurant.logo_url} alt={restaurant.name} className="h-10 w-10 rounded-xl object-cover ring-1 ring-black/10 bg-white group-hover:scale-105 transition-transform" />
               ) : (
                 <div
                   className="h-10 w-10 rounded-lg flex items-center justify-center"
@@ -34,12 +41,12 @@ export default function Footer({ onOpenLocation, onOpenSchedule }: FooterProps) 
                 </div>
               )}
               <span
-                className="text-xl font-semibold tracking-tight"
+                className="text-xl font-semibold tracking-tight group-hover:opacity-85 transition-opacity"
                 style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
               >
                 {restaurant.name}
               </span>
-            </div>
+            </button>
             {restaurant.description && (
               <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--text-muted)' }}>
                 {restaurant.description.slice(0, 150)}{restaurant.description.length > 150 ? '...' : ''}
