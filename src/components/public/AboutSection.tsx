@@ -66,9 +66,9 @@ export default function AboutSection({ onOpenLocation }: AboutSectionProps) {
               {/* Photo Frame */}
               <div className="relative aspect-square w-full rounded-2xl overflow-hidden shadow-md ring-1 ring-black/10 bg-amber-50">
                 <img
-                  src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80"
-                  alt="Cafe Choco Craze Sangli Ambience"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  src="/satyajeet-maskin.jpg"
+                  alt="Franchise Owner - Cafe Choco Craze"
+                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                 />
                 {/* Franchise Badge */}
                 <div className="absolute top-3 left-3 px-3 py-1.5 rounded-full text-xs font-bold text-white bg-black/60 backdrop-blur-md border border-white/20 flex items-center gap-1.5">
