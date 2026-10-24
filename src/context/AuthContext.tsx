@@ -68,9 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function login(email: string, password: string): Promise<{ success: boolean; error?: string }> {
     const isDemoMatch =
       (email === DEMO_ADMIN.email && password === DEMO_ADMIN.password) ||
-      (email === 'admin@cafechococraze.com' && password === 'CafeChocoCraze2024!') ||
-      (email === 'admin@psresto.com' && password === 'PSResto2024!') ||
-      (email === 'admin@thespicehouse.com' && password === 'SpiceHouse2024!');
+      (email === 'admin@cafechococraze.com' && password === 'CafeChocoCraze2024!');
 
     if (isSupabaseConfigured && supabase) {
       try {

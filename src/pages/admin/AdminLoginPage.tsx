@@ -194,40 +194,6 @@ export default function AdminLoginPage() {
                 </>
               )}
             </button>
-
-            {/* Quick Credentials Info / Auto-fill */}
-            <div
-              className="mt-5 p-3.5 rounded-2xl border text-xs flex flex-col gap-2"
-              style={{
-                backgroundColor: 'var(--bg-secondary)',
-                borderColor: 'var(--border-default)',
-              }}
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-semibold" style={{ color: 'var(--text-secondary)' }}>
-                  Manager Credentials:
-                </span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEmail('admin@cafechococraze.com');
-                    setPassword('CafeChocoCraze2024!');
-                  }}
-                  className="px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-xs"
-                  style={{
-                    backgroundColor: 'var(--accent)',
-                    color: 'var(--text-inverse)',
-                    borderColor: 'var(--accent)',
-                  }}
-                >
-                  Auto-fill
-                </button>
-              </div>
-              <div className="space-y-0.5" style={{ color: 'var(--text-muted)' }}>
-                <div><span className="font-medium text-[11px]">Email:</span> <code className="select-all font-mono font-semibold" style={{ color: 'var(--text-primary)' }}>admin@cafechococraze.com</code></div>
-                <div><span className="font-medium text-[11px]">Password:</span> <code className="select-all font-mono font-semibold" style={{ color: 'var(--text-primary)' }}>CafeChocoCraze2024!</code></div>
-              </div>
-            </div>
           </form>
         </div>
 
