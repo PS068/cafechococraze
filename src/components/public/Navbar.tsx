@@ -98,12 +98,12 @@ export default function Navbar() {
               </button>
             ))}
 
-            <ThemeToggle />
+            <ThemeToggle id="theme-toggle-desktop" />
           </nav>
 
           {/* Mobile actions */}
           <div className="flex items-center gap-2 md:hidden">
-            <ThemeToggle />
+            <ThemeToggle id="theme-toggle-mobile" />
             <button
               id="mobile-menu-toggle"
               onClick={() => setIsOpen(!isOpen)}

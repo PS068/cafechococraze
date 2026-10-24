@@ -41,8 +41,8 @@ export default function AboutSection({ onOpenLocation }: AboutSectionProps) {
           </div>
 
           <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4"
-            style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 heading-choco text-[#2b1408] dark:text-[#faf8f5]"
+            style={{ fontFamily: 'var(--font-display)', color: 'var(--color-heading-choco, #2b1408)' }}
           >
             The Heart Behind the Craze
           </h2>

@@ -2,6 +2,7 @@ import { Sparkles } from 'lucide-react';
 import MenuItemCard from './MenuItemCard';
 import type { MenuItem } from '../../types';
 import { groupMenuItemVariants, isPizzaVariantGroup } from '../../lib/menuVariants';
+import { useTheme } from '../../context/ThemeContext';
 
 interface FeaturedItemsProps {
   items: MenuItem[];
@@ -9,6 +10,9 @@ interface FeaturedItemsProps {
 }
 
 export default function FeaturedItems({ items, onSelectItem }: FeaturedItemsProps) {
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+
   if (items.length === 0) return null;
 
   const variantGroups = groupMenuItemVariants(items);
@@ -21,8 +25,11 @@ export default function FeaturedItems({ items, onSelectItem }: FeaturedItemsProp
         <span className="w-1.5 h-6 bg-amber-500 rounded-full inline-block shrink-0" />
         <div>
           <h2
-            className="text-2xl font-bold tracking-tight text-stone-900 dark:text-stone-100"
-            style={{ fontFamily: 'var(--font-display)' }}
+            className="text-2xl font-bold tracking-tight heading-choco text-[#2b1408] dark:text-[#faf8f5]"
+            style={{
+              fontFamily: 'var(--font-display)',
+              color: 'var(--color-heading-choco, #2b1408)',
+            }}
           >
             Signature Cafe Craze
           </h2>

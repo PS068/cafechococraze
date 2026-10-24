@@ -238,7 +238,7 @@ export default function PublicMenuPage() {
           </div>
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2.5 sm:gap-3">
             <div>
-              <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight heading-choco text-[#2b1408] dark:text-[#faf8f5]" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-heading-choco, #2b1408)' }}>
                 Choose your indulgence
               </h2>
               <p className="mt-1 sm:mt-2 text-xs sm:text-base md:text-lg max-w-3xl" style={{ color: 'var(--text-secondary)' }}>

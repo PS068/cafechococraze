@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ═══════════════════════════════════════════════════════
    CAFE CHOCO CRAZE – Design System
    Ultra-premium digital beverage menu
@@ -95,6 +97,7 @@ body {
 /* ─── Light Mode (default) ─── */
 html.light,
 html:not(.dark) {
+  --color-heading-choco: #2b1408;
   --bg-primary: #ffffff;
   --bg-secondary: #faf9f6;
   --bg-card: #ffffff;
@@ -119,6 +122,7 @@ html:not(.dark) {
 
 /* ─── Dark Mode ─── */
 html.dark {
+  --color-heading-choco: #faf8f5;
   --bg-primary: var(--color-charcoal-950);
   --bg-secondary: var(--color-charcoal-900);
   --bg-card: #202022;
@@ -139,6 +143,16 @@ html.dark {
   --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
   --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
   color-scheme: dark;
+}
+
+/* ─── Heading Chocolaty Color Rules ─── */
+html.light .heading-choco,
+html:not(.dark) .heading-choco {
+  color: #2b1408 !important;
+}
+
+html.dark .heading-choco {
+  color: #faf8f5 !important;
 }
 
 /* ─── Utility classes using CSS vars ─── */

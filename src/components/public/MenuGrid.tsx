@@ -100,8 +100,11 @@ export default function MenuGrid({
             <div className="flex items-center gap-2.5 mb-6">
               <span className="w-1.5 h-6 bg-amber-500 rounded-full inline-block" />
               <h2
-                className="text-2xl font-bold tracking-tight text-stone-900 dark:text-stone-100"
-                style={{ fontFamily: 'var(--font-display)' }}
+                className="text-2xl font-bold tracking-tight heading-choco text-[#2b1408] dark:text-[#faf8f5]"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  color: 'var(--color-heading-choco, #2b1408)',
+                }}
               >
                 {category.name}
               </h2>

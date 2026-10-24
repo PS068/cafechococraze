@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { QRCodeSVG, QRCodeCanvas } from 'qrcode.react';
+import { jsPDF } from 'jspdf';
 import {
   Copy,
   Check,
@@ -14,6 +15,7 @@ import {
   Sparkles,
   Coffee,
   Wifi,
+  FileText,
 } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
@@ -83,9 +85,9 @@ export default function QRCodeCard() {
     addToast('QR Code downloaded successfully!', 'success');
   };
 
-  // Generate and download full 4"x9" stand sticker at 300 DPI (1200 x 2700 px)
+  // Generate and download full 4"x9" stand sticker at 300 DPI (1200 x 2700 px) in PNG or PDF
   // Borderless, clean white, featuring the official website logo on both back and front faces
-  const handleDownload10x6Standee = () => {
+  const handleDownload10x6Standee = (format: 'png' | 'pdf' = 'png') => {
     setIsGeneratingPng(true);
 
     try {
@@ -234,16 +236,28 @@ export default function QRCodeCard() {
 
         ctx.restore();
 
-        // Trigger download of the 4x9 standee image
-        const dataUrl = canvas.toDataURL('image/png');
-        const downloadLink = document.createElement('a');
-        downloadLink.href = dataUrl;
-        downloadLink.download = `${restaurant.slug || 'cafe-choco-craze'}-4x9-stand-sticker.png`;
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
+        if (format === 'pdf') {
+          // Export exact same standee sticker canvas into PDF
+          const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'in',
+            format: [4, 9],
+          });
+          pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 4, 9, undefined, 'FAST');
+          pdf.save(`${restaurant.slug || 'cafe-choco-craze'}-4x9-stand-sticker.pdf`);
+          addToast('4×9 Stand Sticker downloaded in PDF!', 'success');
+        } else {
+          // Trigger download of the exact 4x9 standee PNG image
+          const dataUrl = canvas.toDataURL('image/png');
+          const downloadLink = document.createElement('a');
+          downloadLink.href = dataUrl;
+          downloadLink.download = `${restaurant.slug || 'cafe-choco-craze'}-4x9-stand-sticker.png`;
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
 
-        addToast('4×9 Stand Sticker downloaded at 300 DPI!', 'success');
+          addToast('4×9 Stand Sticker downloaded at 300 DPI (PNG)!', 'success');
+        }
         setIsGeneratingPng(false);
       };
 
@@ -409,9 +423,9 @@ export default function QRCodeCard() {
             {/* Action buttons */}
             <div className="flex flex-wrap gap-3 pt-2">
               <button
-                onClick={handleDownload10x6Standee}
+                onClick={() => handleDownload10x6Standee('png')}
                 disabled={isGeneratingPng}
-                className="px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition-transform active:scale-95 shadow-md"
+                className="px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition-transform active:scale-95 shadow-md cursor-pointer"
                 style={{ backgroundColor: 'var(--accent)', color: 'var(--text-inverse)' }}
               >
                 <Download size={16} />
@@ -419,8 +433,19 @@ export default function QRCodeCard() {
               </button>
 
               <button
+                onClick={() => handleDownload10x6Standee('pdf')}
+                disabled={isGeneratingPng}
+                className="px-4 py-2.5 rounded-xl text-sm font-semibold border flex items-center gap-2 transition-colors hover:bg-black/5 dark:hover:bg-white/5 active:scale-95 shadow-md cursor-pointer"
+                style={{ borderColor: 'var(--accent)', color: 'var(--text-primary)' }}
+                title="Download 9×4 Stand Sticker in PDF format"
+              >
+                <FileText size={16} className="text-amber-600" />
+                <span>Download 9×4 Stand Sticker (PDF)</span>
+              </button>
+
+              <button
                 onClick={handlePrint}
-                className="px-4 py-2.5 rounded-xl text-sm font-semibold border flex items-center gap-2 transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+                className="px-4 py-2.5 rounded-xl text-sm font-semibold border flex items-center gap-2 transition-colors hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
                 style={{ borderColor: 'var(--border-default)', color: 'var(--text-primary)' }}
               >
                 <Printer size={16} />
