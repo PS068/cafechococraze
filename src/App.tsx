@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import PublicMenuPage from './pages/PublicMenuPage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminLayout from './pages/admin/AdminLayout';
@@ -14,6 +15,7 @@ import ToastContainer from './components/common/ToastContainer';
 export default function App() {
   return (
     <>
+      <Analytics />
       <ToastContainer />
       <Routes>
         {/* Public digital menu routes */}
